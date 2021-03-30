@@ -9,9 +9,12 @@ contextlib2==0.6.0
 defusedxml==0.6.0
 distlib==0.3.0
 distro==1.4.0
+dj-database-url==0.5.0
 Django==3.1.2
 django-cors-headers==3.5.0
+django-heroku==0.3.1
 djangorestframework==3.12.1
+gunicorn==20.0.4
 html5lib==1.0.1
 idna==2.8
 ipaddr==2.2.0
@@ -22,6 +25,8 @@ packaging==20.3
 pep517==0.8.2
 Pillow==7.2.0
 progress==1.5
+psycopg2==2.8.6
+psycopg2-binary==2.8.6
 pyparsing==2.4.6
 python-decouple==3.3
 python3-openid==3.2.0
@@ -34,3 +39,4 @@ six==1.14.0
 sqlparse==0.3.1
 urllib3==1.25.8
 webencodings==0.5.1
+whitenoise==5.2.0
