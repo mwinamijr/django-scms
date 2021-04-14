@@ -23,7 +23,7 @@ msgpack==0.6.2
 oauthlib==3.1.0
 packaging==20.3
 pep517==0.8.2
-Pillow==7.2.0
+Pillow==8.2.0
 progress==1.5
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
@@ -37,6 +37,7 @@ requests-oauthlib==1.3.0
 retrying==1.3.3
 six==1.14.0
 sqlparse==0.3.1
+toml==0.10.2
 urllib3==1.25.8
 webencodings==0.5.1
 whitenoise==5.2.0
