@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'api',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -74,8 +75,12 @@ WSGI_APPLICATION = 'school.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'test123',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
 }
 
@@ -136,3 +141,5 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 django_heroku.settings(locals())
+
+AUTH_USER_MODEL = 'users.CustomUser'
