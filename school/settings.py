@@ -18,7 +18,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -31,6 +30,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'debug_toolbar',
 
     'api',
     'users',
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -143,3 +144,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 django_heroku.settings(locals())
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
