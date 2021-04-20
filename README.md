@@ -13,3 +13,5 @@ You first need to fork the repo from [Techdometz](https://github.com/TechDometz/
 Clone the forked repo
 
 `git clone https://github.com/[username]/django-scms.git`  
+
+All the latest codes are in development branch
