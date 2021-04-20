@@ -32,8 +32,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
 
-    'api',
-    'users',
+    'api.apps.ApiConfig',
+    'users.apps.UsersConfig',
+    'administration.apps.AdministrationConfig',
 ]
 
 MIDDLEWARE = [

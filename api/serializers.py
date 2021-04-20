@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Article, CarouselImage, PrimaryImage, SecondaryImage, NurseryImage, DispensaryImage
+from administration.models import Article, CarouselImage
 
 class ArticleSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -11,22 +11,3 @@ class CarouselImageSerializer(serializers.ModelSerializer):
 		model = CarouselImage
 		fields = ['id', 'title', 'description', 'picture']
 
-class PrimaryImageSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = PrimaryImage
-		fields = ['id', 'title', 'description', 'picture']
-
-class SecondaryImageSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = SecondaryImage
-		fields = ['id', 'title', 'description', 'picture']
-
-class NurseryImageSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = NurseryImage
-		fields = ['id', 'title', 'description', 'picture']
-
-class DispensaryImageSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = DispensaryImage
-		fields = ['id', 'title', 'description', 'picture']
