@@ -1,13 +1,26 @@
 from django.db import models
 
+class PhoneNumber(models.Model):
+    number = PhoneNumberField()
+    ext = models.CharField(max_length=10, blank=True, null=True)
+    type = models.CharField(max_length=2, choices=(('H', 'Home'), ('C', 'Cell'), ('W', 'Work'), ('O', 'Other')), blank=True)
+    note = models.CharField(max_length=255, blank=True)
+    class Meta:
+        abstract = True
+    def full_number(self):
+        if self.ext:
+            return self.number + " x" + self.ext
+        else:
+            return self.number
+
 
 class EmergencyContact(models.Model):
     fname = models.CharField(max_length=255, verbose_name="First Name")
     mname = models.CharField(max_length=255, blank=True, null=True, verbose_name="Middle Name")
     lname = models.CharField(max_length=255, verbose_name="Last Name")
     relationship_to_student = models.CharField(max_length=500, blank=True)
-    city = models.CharField(max_length=255, blank=True, null=True, default=get_city)
-    state = USStateField(blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(blank=True, null=True)
     post_code = models.CharField(max_length=10, blank=True, null=True)
     email = models.EmailField(blank=True)
     primary_contact = models.BooleanField(default=True, help_text="This contact is where mailings should be sent to. In the event of an emergency, this is the person that will be contacted first.")
@@ -18,43 +31,15 @@ class EmergencyContact(models.Model):
         ordering = ('primary_contact', 'lname')
         verbose_name = "Student Contact"
 
-    def __unicode__(self):
+    def __str__(self):
         txt = self.fname + " " + self.lname
         for number in self.emergencycontactnumber_set.all():
-            txt += " " + unicode(number)
+            txt += " " + str(number)
         return txt
 
     def save(self, *args, **kwargs):
         super(EmergencyContact, self).save(*args, **kwargs)
         self.cache_student_addresses()
-
-    def cache_student_addresses(self):
-        """cache these for the student for primary contact only
-        There is another check on Student in case all contacts where deleted"""
-        if self.primary_contact:
-            for student in self.student_set.all():
-                student.parent_guardian = self.fname + " " + self.lname
-                student.city = self.city
-                student.street = self.street
-                student.state = self.state
-                student.parent_email = self.email
-                student.save()
-                for contact in student.emergency_contacts.exclude(id=self.id):
-                    # There should only be one primary contact!
-                    if contact.primary_contact:
-                        contact.primary_contact = False
-                        contact.save()
-            # cache these for the applicant
-            if hasattr(self, 'applicant_set'):
-                for applicant in self.applicant_set.all():
-                    applicant.set_cache(self)
-
-    def show_student(self):
-        students = ""
-        for student in self.student_set.all():
-            students += f"{student}, "
-        return students[:-2]
-
 
 class EmergencyContactNumber(PhoneNumber):
     contact = models.ForeignKey(EmergencyContact)
