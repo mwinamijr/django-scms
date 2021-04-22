@@ -21,10 +21,10 @@ class CarouselImage(models.Model):
 		return self.title
 
 class AccessLog(models.Model):
-    login = models.ForeignKey(CustomUser)
+    login = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
     ua = models.CharField(max_length=2000, help_text="User agent. We can use this to determine operating system and browser in use.")
     date = models.DateTimeField(default=datetime.now)
-    ip = models.IPAddressField()
+    ip = models.GenericIPAddressField()
     usage = models.CharField(max_length=255)
     def __str__(self):
         return str(self.login) + " " + str(self.usage) + " " + str(self.date)

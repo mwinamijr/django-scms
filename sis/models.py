@@ -22,7 +22,7 @@ class EmergencyContact(models.Model):
     lname = models.CharField(max_length=255, verbose_name="Last Name")
     relationship_to_student = models.CharField(max_length=500, blank=True)
     city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(blank=True, null=True)
+    state = models.CharField(max_length=255, blank=True, null=True)
     post_code = models.CharField(max_length=10, blank=True, null=True)
     email = models.EmailField(blank=True)
     primary_contact = models.BooleanField(default=True, help_text="This contact is where mailings should be sent to. In the event of an emergency, this is the person that will be contacted first.")
@@ -44,7 +44,7 @@ class EmergencyContact(models.Model):
         self.cache_student_addresses()
 
 class EmergencyContactNumber(PhoneNumber):
-    contact = models.ForeignKey(EmergencyContact)
+    contact = models.ForeignKey(EmergencyContact, on_delete=models.CASCADE)
     primary = models.BooleanField(default=False, )
 
     class Meta:
@@ -80,7 +80,7 @@ class GradeLevel(models.Model):
 class ClassYear(models.Model):
     """ Class year such as class of 2010.
     """
-    year = models.IntegerField(unique=True, min_value=1900, max_value=2200, help_text="Example 2014")
+    year = models.IntegerField(unique=True, help_text="Example 2014")
     full_name = models.CharField(max_length=255, help_text="Example Class of 2014", blank=True)
 
     class Meta:
@@ -95,12 +95,12 @@ class ClassYear(models.Model):
             self.full_name = "Class of %s" % (self.year,)
         super(ClassYear, self).save(*args, **kwargs)
 
-class Student():
+class Student(models.Model):
     fname = models.CharField(max_length=150, blank=True, null=True, verbose_name="First Name")
     mname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Middle Name")
     lname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Last Name")
     grad_date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
-    pic = models.ImageField(upload_to="student_pics", blank=True, null=True, sizes=((70,65),(530, 400)))
+    pic = models.ImageField(upload_to="student_pics", blank=True, null=True)
     alert = models.CharField(max_length=500, blank=True, help_text="Warn any user who accesses this record with this text")
     sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
     bday = models.DateField(blank=True, null=True, verbose_name="Birth Date", validators=settings.DATE_VALIDATORS)
@@ -110,14 +110,18 @@ class Student():
         null=True,
         on_delete=models.SET_NULL,
         verbose_name="Grade level")
-    class_of_year = models.ForeignKey(ClassYear, verbose_name="Graduating Class", blank=True, null=True)
+    class_of_year = models.ForeignKey(
+        ClassYear, 
+        on_delete=models.SET_NULL,
+        verbose_name="Graduating Class", 
+        blank=True, null=True)
     #date_dismissed = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
-    prems_number = models.CharField(blank=True, null=True, unique=True, help_text="For integration with outside databases")
+    prems_number = models.CharField(max_length=15,blank=True, null=True, unique=True, help_text="For integration with outside databases")
 
     # These fields are cached from emergency contacts
     parent_guardian = models.CharField(max_length=150, blank=True, editable=False)
     street = models.CharField(max_length=150, blank=True, editable=False)
-    state = models.charField(blank=True, editable=True, null=True)
+    state = models.CharField(max_length=255, blank=True, editable=True, null=True)
     city = models.CharField(max_length=255, blank=True)
     post_code = models.IntegerField(blank=True, editable=False)
     parent_email = models.EmailField(blank=True, editable=False)
@@ -128,8 +132,7 @@ class Student():
 
     class Meta:
         permissions = (
-            ("view_student", "View student"),
-            ("view_mentor_student", "View mentoring information student"),
+            ("viewStudent", "View student"),
             ("reports", "View reports"),
         )
         ordering = ("fname", "lname")
@@ -140,7 +143,7 @@ class Student():
     def get_absolute_url():
         pass
 class StudentHealthRecord(models.Model):
-    student = models.ForeignKey(Student)
+    student = models.ForeignKey(Student, null=True, on_delete=models.SET_NULL)
     record = models.TextField()
 
 
@@ -173,7 +176,7 @@ class GradeScaleRule(models.Model):
     max_grade = models.DecimalField(max_digits=5, decimal_places=2)
     letter_grade = models.CharField(max_length=50, blank=True)
     numeric_scale = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    grade_scale = models.ForeignKey(GradeScale)
+    grade_scale = models.ForeignKey(GradeScale, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('min_grade', 'max_grade', 'grade_scale')
@@ -223,8 +226,8 @@ class MessageToStudent(models.Model):
     """ Stores a message to be shown to students for a specific amount of time
     """
     message = models.TextField(help_text="This message will be shown to students when they log in.")
-    start_date = models.DateField(date=date.now(), validators=settings.DATE_VALIDATORS)
-    end_date = models.DateField(date=date.now(), validators=settings.DATE_VALIDATORS)
-    def __unicode__(self):
+    start_date = models.DateField(auto_now_add=False, validators=settings.DATE_VALIDATORS)
+    end_date = models.DateField(auto_now_add=False, validators=settings.DATE_VALIDATORS)
+    def __str__(self):
         return self.message
 

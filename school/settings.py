@@ -18,6 +18,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import datetime
+from django.core.validators import MinValueValidator # Could use MaxValueValidator too
+DATE_VALIDATORS=[MinValueValidator(datetime.date(1970,1,1))] # Unix epoch!
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -35,6 +40,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'administration.apps.AdministrationConfig',
+    'sis.apps.SisConfig',
 ]
 
 MIDDLEWARE = [

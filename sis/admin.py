@@ -1,3 +1,19 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import (
+    ClassYear, EmergencyContact, 
+    EmergencyContactNumber, GradeLevel,
+    GradeScale, GradeScaleRule, SchoolYear,
+    Student, StudentHealthRecord, MessageToStudent
+    )
+
+admin.site.register(ClassYear)
+admin.site.register(EmergencyContact)
+admin.site.register(EmergencyContactNumber)
+admin.site.register(GradeLevel)
+admin.site.register(GradeScale)
+admin.site.register(GradeScaleRule)
+admin.site.register(SchoolYear)
+admin.site.register(Student)
+admin.site.register(StudentHealthRecord)
+admin.site.register(MessageToStudent)

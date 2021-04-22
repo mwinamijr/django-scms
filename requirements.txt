@@ -1,6 +1,7 @@
 allauth-django==0.42.6
 appdirs==1.4.3
 asgiref==3.2.10
+astroid==2.5.3
 CacheControl==0.12.6
 certifi==2019.11.28
 chardet==3.0.4
@@ -17,9 +18,13 @@ django-heroku==0.3.1
 djangorestframework==3.12.1
 gunicorn==20.0.4
 html5lib==1.0.1
+httpagentparser==1.9.1
 idna==2.8
 ipaddr==2.2.0
+isort==5.8.0
+lazy-object-proxy==1.6.0
 lockfile==0.12.2
+mccabe==0.6.1
 msgpack==0.6.2
 oauthlib==3.1.0
 packaging==20.3
@@ -28,6 +33,7 @@ Pillow==8.2.0
 progress==1.5
 psycopg2==2.8.6
 psycopg2-binary==2.8.6
+pylint==2.7.4
 pyparsing==2.4.6
 python-decouple==3.3
 python3-openid==3.2.0
@@ -42,3 +48,4 @@ toml==0.10.2
 urllib3==1.25.8
 webencodings==0.5.1
 whitenoise==5.2.0
+wrapt==1.12.1
