@@ -4,8 +4,9 @@ from .models import (
     PhoneNumber, EmergencyContact, EmergencyContactNumber, 
     GradeLevel, ClassYear, Student, StudentHealthRecord, 
     GradeScale, GradeScaleRule, SchoolYear, MessageToStudent)
+
 from .serializers import (
-	PhoneNumbertSerializer, EmergencyContactSerializer, EmergencyContactNumberSerializer, 
+	PhoneNumberSerializer, EmergencyContactSerializer, EmergencyContactNumberSerializer, 
     GradeLevelSerializer, ClassYearSerializer, StudentSerializer, StudentHealthRecordSerializer, 
     GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, MessageToStudentSerializer)
 

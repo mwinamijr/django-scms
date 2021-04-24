@@ -4,16 +4,9 @@ from datetime import date
 
 class PhoneNumber(models.Model):
     number = models.CharField(max_length=15, blank=True, null=True)
-    ext = models.CharField(max_length=10, blank=True, null=True)
     _type = models.CharField(max_length=2, choices=(('H', 'Home'), ('C', 'Cell'), ('W', 'Work'), ('O', 'Other')), blank=True)
-    note = models.CharField(max_length=255, blank=True)
-    class Meta:
-        abstract = True
-    def full_number(self):
-        if self.ext:
-            return self.number + " x" + self.ext
-        else:
-            return self.number
+    def __str__(self):
+        return self.number
 
 
 class EmergencyContact(models.Model):
@@ -57,11 +50,8 @@ class EmergencyContactNumber(PhoneNumber):
                 contact.save()
         super(EmergencyContactNumber, self).save(*args, **kwargs)
 
-    def __unicode__(self):
-        if self.ext:
-            return self.get_type_display() + ":" + self.number + "x" + self.ext
-        else:
-            return self.get_type_display() + ":" + self.number
+    def __str__(self):
+        return self.get__type_display() + ":" + self.number
 
 class GradeLevel(models.Model):
     id = models.IntegerField(unique=True, primary_key=True, verbose_name="Grade Number")
