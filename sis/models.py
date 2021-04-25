@@ -36,6 +36,23 @@ class EmergencyContact(models.Model):
         super(EmergencyContact, self).save(*args, **kwargs)
         self.cache_student_addresses()
 
+    def cache_student_addresses(self):
+        """cache these for the student for primary contact only
+        There is another check on Student in case all contacts where deleted"""
+        if self.primary_contact:
+            for student in self.student_set.all():
+                student.parent_guardian = self.fname + " " + self.lname
+                student.city = self.city
+                student.state = self.state
+                student.post_code = self.post_code
+                student.parent_email = self.email
+                student.save()
+                for contact in student.emergency_contacts.exclude(id=self.id):
+                    # There should only be one primary contact!
+                    if contact.primary_contact:
+                        contact.primary_contact = False
+                        contact.save()
+
 class EmergencyContactNumber(PhoneNumber):
     contact = models.ForeignKey(EmergencyContact, on_delete=models.CASCADE)
     primary = models.BooleanField(default=False, )
@@ -113,7 +130,7 @@ class Student(models.Model):
     street = models.CharField(max_length=150, blank=True, editable=False)
     state = models.CharField(max_length=255, blank=True, editable=True, null=True)
     city = models.CharField(max_length=255, blank=True)
-    post_code = models.IntegerField(blank=True, editable=False)
+    post_code = models.IntegerField(blank=True, editable=False, null=True)
     parent_email = models.EmailField(blank=True, editable=False)
     notes = models.TextField(blank=True)
     emergency_contacts = models.ManyToManyField(EmergencyContact, verbose_name="Student Contact", blank=True)
@@ -136,6 +153,8 @@ class StudentHealthRecord(models.Model):
     student = models.ForeignKey(Student, null=True, on_delete=models.SET_NULL)
     record = models.TextField()
 
+    def __str__(self):
+        return f"{self.student.fname} {self.student.lname}"
 
 class GradeScale(models.Model):
     """ Translate a numeric grade to some other scale.
@@ -164,15 +183,15 @@ class GradeScaleRule(models.Model):
     """ One rule for a grade scale.  """
     min_grade = models.DecimalField(max_digits=5, decimal_places=2)
     max_grade = models.DecimalField(max_digits=5, decimal_places=2)
-    letter_grade = models.CharField(max_length=50, blank=True)
-    numeric_scale = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    letter_grade = models.CharField(max_length=50, blank=True, null=True)
+    numeric_scale = models.DecimalField(max_digits=5, decimal_places=2, blank=True)
     grade_scale = models.ForeignKey(GradeScale, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('min_grade', 'max_grade', 'grade_scale')
 
     def __str__(self):
-        return f"{self.min_grade}-{self.max_grade} {self.letter_grad} {self.numeric_scale}"
+        return f"{self.min_grade}-{self.max_grade} {self.letter_grade} {self.numeric_scale}"
 
 
 #def get_default_benchmark_grade():
