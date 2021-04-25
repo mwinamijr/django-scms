@@ -21,9 +21,9 @@ class AttendanceStatus(models.Model):
 class TeachersAttendance(models.Model):
     date = models.DateField(auto_now_add=False)
     teacher = models.ForeignKey(Teacher, blank=True, on_delete=models.CASCADE)
-    time_in = models.TimeField(auto_now_add=False blank=True)
+    time_in = models.TimeField(auto_now_add=False, blank=True)
     time_out = models.TimeField(auto_now_add=False, blank=True)
-    status = models.ForeignKey(AttendanceStatus, blank=true, null=true, on_delete=models.CASCADE)
+    status = models.ForeignKey(AttendanceStatus, blank=True, null=True, on_delete=models.CASCADE)
     notes = models.CharField(max_length=500, blank=True)
 
     class Meta:
