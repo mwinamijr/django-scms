@@ -1,6 +1,9 @@
 from django.db import models
 import httpagentparser
-from users.models import CustomUser
+
+
+from users.models import CustomUser, Teacher
+from sis.models import GradeLevel
 
 from datetime import datetime
 
@@ -39,5 +42,27 @@ class AccessLog(models.Model):
         except:
             return "Unknown"
 
+class ClassEnrollment(models.Model):
+    class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
+    student = models.ForeignKey('sis.Student', on_delete=models.CASCADE, blank=True, null=True)
+    attendance_note = models.CharField(max_length=255, blank=True, help_text="This note will appear when taking attendance.")
+    is_active = models.BooleanField(default=True)
 
-class 
+    class Meta:
+        unique_together = (("class_section", "student"),)
+
+
+class ClassTeacher(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
+    class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
+    is_primary = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('teacher', 'class_section')
+
+
+class ClassSection(models.Model):
+    gradeLevel = models.ForeignKey(GradeLevel, on_delete=models.CASCADE, blank=True, null=True)
+    section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
+    teacher = models.ForeignKey(Teacher, through=ClassTeacher,on_delete=models.CASCADE, blank=True, null=True)
+    students = models.ManyToManyField('sis.Student', blank=True, null=True)
