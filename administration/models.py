@@ -38,3 +38,6 @@ class AccessLog(models.Model):
             return httpagentparser.simple_detect(self.ua)[1]
         except:
             return "Unknown"
+
+
+class 
