@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
 
-    'api.apps.ApiConfig',
-    'users.apps.UsersConfig',
     'administration.apps.AdministrationConfig',
+    'api.apps.ApiConfig',
+    'attendance.apps.AttendanceConfig',
+    'users.apps.UsersConfig',
     'sis.apps.SisConfig',
+    
 ]
 
 MIDDLEWARE = [

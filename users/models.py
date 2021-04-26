@@ -26,6 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Accountant(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    empId = models.CharField(max_length=8, null=True, blank=True, unique=True)
     isAccountant = models.BooleanField(default=True)
     salary = models.IntegerField(blank=True, null=True)
 
@@ -34,8 +35,12 @@ class Accountant(models.Model):
 
 class Teacher(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    empId = models.CharField(max_length=8, null=True, blank=True, unique=True)
     isTeacher = models.BooleanField(default=True)
     salary = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        ordering = ("id",)
 
     def __str__(self):
         return self.user.email

@@ -1,4 +1,6 @@
 from django.db import models
+
+from sis.models import Student
 from users.models import CustomUser, Teacher, Accountant
 
 
@@ -31,7 +33,7 @@ class TeachersAttendance(models.Model):
         ordering = ('-date', 'teacher')
 
     def __str__(self):
-        return f"{self.teacher.first_name} - {self.date} {self.status} "
+        return f"{self.teacher} - {self.date} {self.status} "
 
     @property
     def edit(self):

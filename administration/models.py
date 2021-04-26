@@ -68,5 +68,5 @@ class ClassLevel(models.Model):
 class ClassSection(models.Model):
     classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
     section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
-    teacher = models.ForeignKey(Teacher, through=ClassTeacher,on_delete=models.CASCADE, blank=True, null=True)
-    students = models.ManyToManyField('sis.Student', blank=True, null=True)
+    teacher = models.ForeignKey(ClassTeacher, on_delete=models.CASCADE, blank=True, null=True)
+    students = models.ManyToManyField('sis.Student', blank=True)
