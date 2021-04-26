@@ -42,16 +42,6 @@ class AccessLog(models.Model):
         except:
             return "Unknown"
 
-class ClassEnrollment(models.Model):
-    class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
-    student = models.ForeignKey('sis.Student', on_delete=models.CASCADE, blank=True, null=True)
-    attendance_note = models.CharField(max_length=255, blank=True, help_text="This note will appear when taking attendance.")
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        unique_together = (("class_section", "student"),)
-
-
 class ClassTeacher(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
     class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
@@ -60,9 +50,23 @@ class ClassTeacher(models.Model):
     class Meta:
         unique_together = ('teacher', 'class_section')
 
+class ClassLevel(models.Model):
+    name = models.CharField(max_length=15, blank=True, null=True, verbose_name="Class Name")
+    id = models.IntegerField(unique=True, primary_key=True, verbose_name="Grade Number")
+    shortname = models.CharField(max_length=15, blank=True, null=True)
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def grade(self):
+        return self.id
 
 class ClassSection(models.Model):
-    gradeLevel = models.ForeignKey(GradeLevel, on_delete=models.CASCADE, blank=True, null=True)
+    classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
     section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
     teacher = models.ForeignKey(Teacher, through=ClassTeacher,on_delete=models.CASCADE, blank=True, null=True)
     students = models.ManyToManyField('sis.Student', blank=True, null=True)
