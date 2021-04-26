@@ -10,6 +10,7 @@ urlpatterns = [
      path('', TemplateView.as_view(template_name='index.html')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/administrations/', include('api.administration.urls')),
+    path('api/attendance/', include('api.attendance.urls')),
     path('api/users/', include('api.users.urls')),
     path('api/sis/', include('api.sis.urls')),
     path('__debug__/', include(debug_toolbar.urls)),

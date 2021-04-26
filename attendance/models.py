@@ -10,7 +10,7 @@ class AttendanceStatus(models.Model):
     code = models.CharField(max_length=10, unique=True, help_text="Short code used on attendance reports. Ex: A might be the code for the name Absent")
     excused = models.BooleanField(default=False, )
     absent = models.BooleanField(default=False, help_text="Some statistics need to add various types of absent statuses, such as the number in parentheses in daily attendance.")
-    tardy = models.BooleanField(default=False, help_text="Some statistics need to add various types of tardy statuses, such as the number in parentheses in daily attendance.")
+    late = models.BooleanField(default=False, help_text="Some statistics need to add various types of late statuses, such as the number in parentheses in daily attendance.")
     half = models.BooleanField(default=False, help_text="Half attendance when counting. DO NOT check off absent otherwise it will double count!")
     
     class Meta:
@@ -39,14 +39,14 @@ class TeachersAttendance(models.Model):
     def edit(self):
         return "Edit"
     
-    def save(self, *args, **kwargs):
-        """Don't save Present """
-        present, created = AttendanceStatus.objects.get_or_create(name="Present")
-        if self.status != present:
-            super(TeachersAttendance, self).save(*args, **kwargs)
-        else:
-            try: self.delete()
-            except: pass
+    #def save(self, *args, **kwargs):
+    #    """Don't save Present """
+    #    present, created = AttendanceStatus.objects.get_or_create(name="Present")
+    #    if self.status != present:
+    #        super(TeachersAttendance, self).save(*args, **kwargs)
+    #    else:
+    #        try: self.delete()
+    #        except: pass
 
 class StudentAttendance(models.Model):
     """
