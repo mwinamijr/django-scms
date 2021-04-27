@@ -172,7 +172,9 @@ class Student(models.Model):
     def get_absolute_url():
         pass
     
-
+class StudentBulkUpload(models.Model):
+    date_uploaded = models.DateTimeField(auto_now=True)
+    csv_file = models.FileField(upload_to='api/sis/students/bulkupload')
 
 
 class StudentHealthRecord(models.Model):
