@@ -3,7 +3,7 @@ import httpagentparser
 
 
 from users.models import CustomUser, Teacher
-from sis.models import GradeLevel
+from sis.models import GradeLevel, ClassLevel
 
 from datetime import datetime
 
@@ -49,21 +49,6 @@ class ClassTeacher(models.Model):
 
     class Meta:
         unique_together = ('teacher', 'class_section')
-
-class ClassLevel(models.Model):
-    name = models.CharField(max_length=15, blank=True, null=True, verbose_name="Class Name")
-    id = models.IntegerField(unique=True, primary_key=True, verbose_name="Grade Number")
-    shortname = models.CharField(max_length=15, blank=True, null=True)
-
-    class Meta:
-        ordering = ('id',)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def grade(self):
-        return self.id
 
 class ClassSection(models.Model):
     classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)

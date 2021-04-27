@@ -102,7 +102,23 @@ class ClassYear(models.Model):
             self.full_name = "Class of %s" % (self.year,)
         super(ClassYear, self).save(*args, **kwargs)
 
+class ClassLevel(models.Model):
+    name = models.CharField(max_length=15, blank=True, null=True, verbose_name="Class Name")
+    id = models.IntegerField(unique=True, primary_key=True, verbose_name="Grade Number")
+    shortname = models.CharField(max_length=15, blank=True, null=True)
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def grade(self):
+        return self.id
+
 class Student(models.Model):
+    addmission_number = models.IntegerField(unique=True, primary_key=True)
     fname = models.CharField(max_length=150, blank=True, null=True, verbose_name="First Name")
     mname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Middle Name")
     lname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Last Name")
@@ -111,12 +127,18 @@ class Student(models.Model):
     alert = models.CharField(max_length=500, blank=True, help_text="Warn any user who accesses this record with this text")
     sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
     bday = models.DateField(blank=True, null=True, verbose_name="Birth Date", validators=settings.DATE_VALIDATORS)
-    year = models.ForeignKey(
+    grade_level = models.ForeignKey(
         GradeLevel,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name="Grade level")
+    class_level = models.ForeignKey(
+        ClassLevel,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Class level")
     class_of_year = models.ForeignKey(
         ClassYear, 
         on_delete=models.SET_NULL,
@@ -145,10 +167,14 @@ class Student(models.Model):
         ordering = ("fname", "lname")
 
     def __str__(self):
-        return f"{self.fname} {self.lname}"
+        return f"{self.addmission_number}-{self.fname} {self.lname}"
 
     def get_absolute_url():
         pass
+    
+
+
+
 class StudentHealthRecord(models.Model):
     student = models.ForeignKey(Student, null=True, on_delete=models.SET_NULL)
     record = models.TextField()
