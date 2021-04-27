@@ -1,7 +1,8 @@
-from rest_framework import viewsets, views
+from rest_framework import generics, views
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import Http404
 
 from .models import (
     PhoneNumber, EmergencyContact, EmergencyContactNumber, 

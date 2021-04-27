@@ -9,7 +9,7 @@ from sis.views import (
 
 urlpatterns = [
     path('students/', StudentListView.as_view(), name="students-list"),
-    path('students/<int:admission_number>/', StudentListView.as_view(), name="student-detail"),
+    path('students/<int:pk>/', StudentDetailView.as_view(), name="student-detail"),
     path('upload/<filename>/', StudentBulkUploadView.as_view()),
     ]
 
