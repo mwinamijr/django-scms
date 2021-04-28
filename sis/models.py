@@ -164,7 +164,7 @@ class Student(models.Model):
             ("viewStudent", "View student"),
             ("reports", "View reports"),
         )
-        ordering = ("fname", "lname")
+        ordering = ("addmission_number","fname", "lname")
 
     def __str__(self):
         return f"{self.addmission_number}-{self.fname} {self.lname}"
