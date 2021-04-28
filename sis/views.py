@@ -85,6 +85,10 @@ class StudentDetailView(views.APIView):
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
 class StudentBulkUploadView(views.APIView):
+	"""
+	This uploads bulk number of students from excel file
+	"""
+
 	parser_class = [FileUploadParser]
 	def post(self, request, filename, format="xlsx"):
 		file_obj = request.data
