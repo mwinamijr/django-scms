@@ -18,6 +18,19 @@ class TeachersAttendanceViewSet(viewsets.ModelViewSet):
 	queryset = TeachersAttendance.objects.all()
 	serializer_class = TeachersAttendanceSerializer
 
+class TeachersAttendanceBulkCreateView(generics.CreateAPIView):
+	serializer_class = TeachersAttendanceSerializer
+	queryset = TeachersAttendance.objects.all()
+
+	def post(self, request):
+		print(request.data)
+		serializer = TeachersAttendanceSerializer(request.data)
+		#serializer.is_valid()
+		teachers_attendance = serializer.create(request)
+		if teachers_attendance:
+			return Response(status=status.HTTP_201_CREATED)
+		return Response(status=status.HTTP_400_BAD_REQUEST)
+
 class TeachersAttendanceBulkUploadView(views.APIView):
 	"""
 	This uploads bulk daily teacher's attendance from an excel file
