@@ -3,6 +3,8 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+from openpyxl import load_workbook, Workbook
+from openpyxl.utils import get_column_letter
 
 from .models import (
     PhoneNumber, EmergencyContact, EmergencyContactNumber, 
@@ -12,7 +14,9 @@ from .models import (
 from .serializers import (
 	PhoneNumberSerializer, EmergencyContactSerializer, EmergencyContactNumberSerializer, 
     GradeLevelSerializer, ClassYearSerializer, StudentSerializer, StudentHealthRecordSerializer, 
-    GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, MessageToStudentSerializer)
+    GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, MessageToStudentSerializer,StudentSerializer,
+	FileUploadSerializer
+	)
 '''
 class PhoneNumberViewSet(viewsets.ModelViewSet):
 	queryset = PhoneNumber.objects.all()
@@ -82,8 +86,51 @@ class StudentDetailView(views.APIView):
 
 class StudentBulkUploadView(views.APIView):
 	parser_class = [FileUploadParser]
-	def post(self, request, filename, format=None):
-		file_obj = request.data['file']
+	def post(self, request, filename, format="xlsx"):
+		file_obj = request.data
+		xlfile = file_obj["filename"]
+
+		print(xlfile)
+
+		wb = load_workbook(xlfile)
+
+		ws = wb.active
+		print(ws.title)
+
+		studentz = []
+
+		for row in ws.iter_rows(min_row=2, max_col=9, max_row=12, values_only=True):
+			studentz.append(row)
+			#print(api)
+
+
+		students = []
+		for i in range(len(studentz)):
+			student = {
+				"addmission_number": f"{studentz[i][0]}",
+				"fname": f"{studentz[i][1]}",
+				"mname": f"{studentz[i][2]}",
+				"lname": f"{studentz[i][3]}",
+				"grad_date": f"{studentz[i][4]}",
+				"sex": f"{studentz[i][5]}",
+				"bday": f"{studentz[i][6]}",
+				"grade_level": f"{studentz[i][7]}",
+				"class_level": f"{studentz[i][8]}",	
+					}
+			students.append(student)
+			
+			serializer = StudentSerializer(data=student)
+			if serializer.is_valid():
+				serializer.save()
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+		print(students)
+
+
+		student = Student()
+
 
 		return Response(status=204)
 

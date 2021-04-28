@@ -29,12 +29,6 @@ class ClassYearSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = "__all__"
-
-
 class StudentHealthRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentHealthRecord
@@ -64,3 +58,12 @@ class MessageToStudentSerializer(serializers.ModelSerializer):
         model = MessageToStudent
         fields = "__all__"
 
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = "__all__"
+
+
+class FileUploadSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
