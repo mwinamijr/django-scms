@@ -18,6 +18,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import datetime
+from django.core.validators import MinValueValidator # Could use MaxValueValidator too
+DATE_VALIDATORS=[MinValueValidator(datetime.date(1970,1,1))] # Unix epoch!
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -32,8 +37,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
 
-    'api',
-    'users',
+    'administration.apps.AdministrationConfig',
+    'api.apps.ApiConfig',
+    'attendance.apps.AttendanceConfig',
+    'users.apps.UsersConfig',
+    'sis.apps.SisConfig',
+    
 ]
 
 MIDDLEWARE = [
@@ -77,7 +86,7 @@ WSGI_APPLICATION = 'school.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'hayatul',
         'USER': 'postgres',
         'PASSWORD': 'test123',
         'HOST': '127.0.0.1',
@@ -135,7 +144,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ]
 }
 
