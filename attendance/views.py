@@ -68,8 +68,14 @@ class TeachersAttendanceBulkCreateView(generics.CreateAPIView):
 		serializer = TeachersAttendanceSerializer(request.data)
 		#serializer.is_valid()
 		teachers_attendance = serializer.create(request)
-		if teachers_attendance:
-			return Response(status=status.HTTP_201_CREATED)
+		print(teachers_attendance)
+		for attendance in teachers_attendance:
+
+			serializer = TeachersAttendanceSerializer(data=attendance)
+			serializer.is_valid()
+			if attendance:
+				continue
+				#return Response(status=status.HTTP_201_CREATED)
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class TeachersAttendanceBulkUploadView(views.APIView):

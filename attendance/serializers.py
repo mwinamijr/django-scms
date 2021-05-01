@@ -27,16 +27,16 @@ class TeachersAttendanceSerializer(serializers.ModelSerializer):
 		for row in ws.iter_rows(min_row=2, max_col=9, max_row=12, values_only=True):
 			teacherz.append(row)
 			#print(api)
-		print(teacherz)
-		'''	
-		students = []
-		for i in range(len(studentz)):
-			student = {
-				"date": f"{studentz[i][0]}",
-				"time_in": f"{studentz[i][1]}",
-				"time_out": f"{studentz[i][2]}",
-				"teacher": f"{studentz[i][3]}",
-				"status": f"{studentz[i][4]}",
+		#print(teacherz)
+		
+		teachers = []
+		for i in range(len(teacherz)):
+			teacher = {
+				"date": f"{teacherz[i][0]}",
+				"time_in": f"{teacherz[i][1]}",
+				"time_out": f"{teacherz[i][2]}",
+				"teacher": f"{teacherz[i][3]}",
+				"status": f"{teacherz[i][4]}",
 					}
-			students.append(student)
-		'''
+			teachers.append(teacher)
+		return teachers
