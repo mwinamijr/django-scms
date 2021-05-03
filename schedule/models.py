@@ -23,7 +23,7 @@ class Subject(models.Model):
         return self.name
 
 class Period(models.Model):
-    name = models.OneToOneField(Subject, related_name='period', on_delete=models.CASCADE)
+    subject = models.OneToOneField(Subject, related_name='period', on_delete=models.CASCADE)
     number = models.IntegerField(blank=True, null=True, default=1)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
     period_time = models.CharField(max_length=100, choices=TIMETABLE_CHOICES, blank=True, null=True)
@@ -36,14 +36,14 @@ class Period(models.Model):
 
 
 class DailyTimeTable(models.Model):
-    period1 = models.OneToOneField(Period,related_name='period1', on_delete=models.CASCADE, blank=True, null=True)
-    period2 = models.OneToOneField(Period,related_name='period2', on_delete=models.CASCADE, blank=True, null=True)
-    period3 = models.OneToOneField(Period,related_name='period3', on_delete=models.CASCADE, blank=True, null=True)
-    period4 = models.OneToOneField(Period,related_name='period4', on_delete=models.CASCADE, blank=True, null=True)
-    period5 = models.OneToOneField(Period,related_name='period5', on_delete=models.CASCADE, blank=True, null=True)
-    period6 = models.OneToOneField(Period,related_name='period6', on_delete=models.CASCADE, blank=True, null=True)
-    period7 = models.OneToOneField(Period,related_name='period7', on_delete=models.CASCADE, blank=True, null=True)
-    period8 = models.OneToOneField(Period,related_name='period8', on_delete=models.CASCADE, blank=True, null=True)
+    period1 = models.OneToOneField(Subject, related_name='period1', on_delete=models.CASCADE, blank=True, null=True)
+    period2 = models.OneToOneField(Subject, related_name='period2', on_delete=models.CASCADE, blank=True, null=True)
+    period3 = models.OneToOneField(Subject, related_name='period3', on_delete=models.CASCADE, blank=True, null=True)
+    period4 = models.OneToOneField(Subject, related_name='period4', on_delete=models.CASCADE, blank=True, null=True)
+    period5 = models.OneToOneField(Subject, related_name='period5', on_delete=models.CASCADE, blank=True, null=True)
+    period6 = models.OneToOneField(Subject, related_name='period6', on_delete=models.CASCADE, blank=True, null=True)
+    period7 = models.OneToOneField(Subject, related_name='period7', on_delete=models.CASCADE, blank=True, null=True)
+    period8 = models.OneToOneField(Subject, related_name='period8', on_delete=models.CASCADE, blank=True, null=True)
 
 
 class WeeklyTimeTable(models.Model):
