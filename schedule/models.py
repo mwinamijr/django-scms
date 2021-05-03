@@ -3,25 +3,36 @@ import httpagentparser
 
 from users.models import Teacher
 
-class Subject(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    code = models.IntegerField(blank=True, null=True)
-    short_name = models.CharField(max_length=5, blank=True, null=True)
+TIMETABLE_CHOICES = [
+    ("1", "07:20:00 - 08:00:00"),
+    ("2", "08:00:00 - 08:40:00"),
+    ("3", "08:40:00 - 09:20:00"),
+    ("4", "09:20:00 - 10:00:00"),
+    ("5", "10:20:00 - 11:00:00"),
+    ("6", "11:00:00 - 11:40:00"),
+    ("7", "11:40:00 - 12:20:00"),
+    ("8", "12:20:00 - 13:00:00"),
+]
 
-    def __str_(self):
+class Subject(models.Model):
+    code = models.IntegerField(primary_key=True,blank=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    short_name = models.CharField(max_length=5, blank=True, null=True)
+    
+    def __str__(self):
         return self.name
 
 class Period(models.Model):
     name = models.OneToOneField(Subject, related_name='period', on_delete=models.CASCADE)
+    number = models.IntegerField(blank=True, null=True, default=1)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    period_time = models.CharField(max_length=100, choices=TIMETABLE_CHOICES, blank=True, null=True)
 
     class Meta:
-        ordering = ('start_time',)
+        ordering = ('period_time',)
 
     def __str__(self):
-        return "%s %s-%s" % (self.name, self.start_time.strftime('%I:%M%p'), self.end_time.strftime('%I:%M%p'))
+        return f"{self.name} - {self.period_time}"
 
 
 class DailyTimeTable(models.Model):
