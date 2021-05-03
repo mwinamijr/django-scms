@@ -41,17 +41,3 @@ class AccessLog(models.Model):
             return httpagentparser.simple_detect(self.ua)[1]
         except:
             return "Unknown"
-
-class ClassTeacher(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
-    class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
-    is_primary = models.BooleanField(default=False)
-
-    class Meta:
-        unique_together = ('teacher', 'class_section')
-
-class ClassSection(models.Model):
-    classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
-    section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
-    teacher = models.ForeignKey(ClassTeacher, on_delete=models.CASCADE, blank=True, null=True)
-    students = models.ManyToManyField('sis.Student', blank=True)
