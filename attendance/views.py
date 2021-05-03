@@ -94,7 +94,7 @@ class TeachersAttendanceBulkUploadView(views.APIView):
 		print(ws.title)
 
 		teachers_att = []
-		for row in ws.iter_rows(min_row=2, max_col=9, max_row=12, values_only=True):
+		for row in ws.iter_rows(min_row=2, max_col=9, max_row=9, values_only=True):
 			teachers_att.append(row)
 			#print(api)
 			
