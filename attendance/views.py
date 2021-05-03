@@ -88,33 +88,34 @@ class TeachersAttendanceBulkUploadView(views.APIView):
 		file_obj = request.data
 		xlfile = file_obj["filename"]
 
-		#print(xlfile)
+		print(xlfile)
 		wb = load_workbook(xlfile)
 		ws = wb.active
-		#print(ws.title)
+		print(ws.title)
 
-		studentz = []
+		teachers_att = []
 		for row in ws.iter_rows(min_row=2, max_col=9, max_row=12, values_only=True):
-			studentz.append(row)
+			teachers_att.append(row)
 			#print(api)
 			
-		students = []
-		for i in range(len(studentz)):
-			student = {
-				"date": f"{studentz[i][0]}",
-				"time_in": f"{studentz[i][1]}",
-				"time_out": f"{studentz[i][2]}",
-				"teacher": f"{studentz[i][3]}",
-				"status": f"{studentz[i][4]}",
+		attendances = []
+		for i in range(len(teachers_att)):
+			teacher = {
+				"date": f"{teachers_att[i][0]}",
+				"time_in": f"{teachers_att[i][1]}",
+				"time_out": f"{teachers_att[i][2]}",
+				"teacher": f"{teachers_att[i][3]}",
+				"status": f"{teachers_att[i][4]}",
 					}
-			students.append(student)
+			attendances.append(teacher)
 		
-		for student in students:
-			if student in Student.objects.all():
-				print("student exists!")
+		for attendance in attendances:
+			qs = TeachersAttendance.objects.filter(date=attendance['date'])
+			if attendance in qs:
+				print("Attendance already exists!")
 				continue
 			else: 
-				serializer = StudentSerializer(data=student)
+				serializer = TeachersAttendanceSerializer(data=attendance)
 				if serializer.is_valid():
 					serializer.save()
 					#return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -122,9 +123,6 @@ class TeachersAttendanceBulkUploadView(views.APIView):
 
 
 		#print(students)
-
-
-		student = Student()
 
 
 		return Response(status=204)
