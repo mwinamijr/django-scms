@@ -36,21 +36,21 @@ class Period(models.Model):
 
 
 class DailyTimeTable(models.Model):
-    period1 = models.OneToOneField(Period,related_name='period1', on_delete=models.CASCADE)
-    period2 = models.OneToOneField(Period,related_name='period2', on_delete=models.CASCADE)
-    period3 = models.OneToOneField(Period,related_name='period3', on_delete=models.CASCADE)
-    period4 = models.OneToOneField(Period,related_name='period4', on_delete=models.CASCADE)
-    period5 = models.OneToOneField(Period,related_name='period5', on_delete=models.CASCADE)
-    period6 = models.OneToOneField(Period,related_name='period6', on_delete=models.CASCADE)
-    period7 = models.OneToOneField(Period,related_name='period7', on_delete=models.CASCADE)
-    period8 = models.OneToOneField(Period,related_name='period8', on_delete=models.CASCADE)
+    period1 = models.OneToOneField(Period,related_name='period1', on_delete=models.CASCADE, blank=True, null=True)
+    period2 = models.OneToOneField(Period,related_name='period2', on_delete=models.CASCADE, blank=True, null=True)
+    period3 = models.OneToOneField(Period,related_name='period3', on_delete=models.CASCADE, blank=True, null=True)
+    period4 = models.OneToOneField(Period,related_name='period4', on_delete=models.CASCADE, blank=True, null=True)
+    period5 = models.OneToOneField(Period,related_name='period5', on_delete=models.CASCADE, blank=True, null=True)
+    period6 = models.OneToOneField(Period,related_name='period6', on_delete=models.CASCADE, blank=True, null=True)
+    period7 = models.OneToOneField(Period,related_name='period7', on_delete=models.CASCADE, blank=True, null=True)
+    period8 = models.OneToOneField(Period,related_name='period8', on_delete=models.CASCADE, blank=True, null=True)
 
 
 class WeeklyTimeTable(models.Model):
-    monday = models.OneToOneField(DailyTimeTable,related_name='monday', on_delete=models.CASCADE)
-    tuesday = models.OneToOneField(DailyTimeTable,related_name='tuesday', on_delete=models.CASCADE)
-    wednesday = models.OneToOneField(DailyTimeTable,related_name='wednesday', on_delete=models.CASCADE)
-    thursday = models.OneToOneField(DailyTimeTable,related_name='thursday', on_delete=models.CASCADE)
-    friday = models.OneToOneField(DailyTimeTable,related_name='friday', on_delete=models.CASCADE)
-    saturday = models.OneToOneField(DailyTimeTable,related_name='saturday', on_delete=models.CASCADE)
+    monday = models.OneToOneField(DailyTimeTable,related_name='monday', on_delete=models.CASCADE, blank=True, null=True)
+    tuesday = models.OneToOneField(DailyTimeTable,related_name='tuesday', on_delete=models.CASCADE, blank=True, null=True)
+    wednesday = models.OneToOneField(DailyTimeTable,related_name='wednesday', on_delete=models.CASCADE, blank=True, null=True)
+    thursday = models.OneToOneField(DailyTimeTable,related_name='thursday', on_delete=models.CASCADE, blank=True, null=True)
+    friday = models.OneToOneField(DailyTimeTable,related_name='friday', on_delete=models.CASCADE, blank=True, null=True)
+    saturday = models.OneToOneField(DailyTimeTable,related_name='saturday', on_delete=models.CASCADE, blank=True, null=True)
  
