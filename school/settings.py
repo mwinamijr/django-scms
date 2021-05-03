@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'attendance.apps.AttendanceConfig',
     'users.apps.UsersConfig',
+    'schedule.apps.ScheduleConfig',
     'sis.apps.SisConfig',
     
 ]

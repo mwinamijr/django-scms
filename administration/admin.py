@@ -5,5 +5,4 @@ from .models import *
 admin.site.register(Article)
 admin.site.register(CarouselImage)
 admin.site.register(ClassTeacher)
-admin.site.register(ClassLevel)
 admin.site.register(ClassSection)
