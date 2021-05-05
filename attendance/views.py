@@ -5,10 +5,10 @@ from rest_framework import status
 from django.http import Http404
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
+import json
 
 from .models import AttendanceStatus, TeachersAttendance
-from .serializers import (
-	AttendanceStatusSerializer, TeachersAttendanceSerializer)
+from .serializers import (AttendanceStatusSerializer, TeachersAttendanceSerializer)
 
 class AttendanceStatusViewSet(viewsets.ModelViewSet):
 	queryset = AttendanceStatus.objects.all()
@@ -29,6 +29,8 @@ class TeachersAttendanceListView(views.APIView):
 
 	def post(self, request, format=None):
 		serializer = TeachersAttendanceSerializer(data=request.data)
+		print(request.data)
+		print(serializer)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -108,23 +110,14 @@ class TeachersAttendanceBulkUploadView(views.APIView):
 				"status": f"{teachers_att[i][4]}",
 					}
 			attendances.append(teacher)
-		
-		for attendance in attendances:
-			qs = TeachersAttendance.objects.filter(date=attendance['date'])
-			if attendance in qs:
-				print("Attendance already exists!")
-				continue
-			else: 
-				serializer = TeachersAttendanceSerializer(data=attendance)
-				if serializer.is_valid():
-					serializer.save()
-					#return Response(serializer.data, status=status.HTTP_201_CREATED)
-				#return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+			
+		for teacher in attendances:
+			serializer = TeachersAttendanceSerializer(data=teacher)
+			print(serializer.is_valid())
+			if serializer.is_valid():
+				serializer.save()
+				#return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-		#print(students)
-
-
-		return Response(status=204)
 
 
