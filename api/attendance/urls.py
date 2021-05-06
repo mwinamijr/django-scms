@@ -2,7 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from attendance.views import (
 	AttendanceStatusViewSet, TeachersAttendanceViewSet, 
-	TeachersAttendanceListView, TeachersAttendanceDetailView,TeachersAttendanceBulkUploadView)
+	TeachersAttendanceListView, TeachersAttendanceDetailView,
+	TeachersAttendanceBulkUploadView, teacherAttendanceView)
 
 '''
 router = DefaultRouter()
@@ -15,7 +16,8 @@ urlpatterns = [
 '''
 
 urlpatterns = [
-	path('teachers-attendance/', TeachersAttendanceListView.as_view(), name="students-list"),
-    path('teachers-attendance/<int:pk>/', TeachersAttendanceDetailView.as_view(), name="student-detail"),
+	path('teachers-attendance/', TeachersAttendanceListView.as_view(), name="teachers-attendance-list"),
+    path('teachers-attendance/<int:pk>/', TeachersAttendanceDetailView.as_view(), name="teachers-attendance-detail"),
+    path('teacher-attendance/<int:pk>/', teacherAttendanceView, name="teacher-attendance-list"),
 	path("teachers-attendance/upload/<filename>/", TeachersAttendanceBulkUploadView.as_view(), name="teachers-attendance-bulk"),
 ]

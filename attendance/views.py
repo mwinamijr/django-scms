@@ -1,4 +1,5 @@
 from rest_framework import generics, views, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,6 +8,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 import json
 
+from users.models import Teacher
 from .models import AttendanceStatus, TeachersAttendance
 from .serializers import (AttendanceStatusSerializer, TeachersAttendanceSerializer)
 
@@ -42,6 +44,7 @@ class TeachersAttendanceDetailView(views.APIView):
 			return TeachersAttendance.objects.get(pk=pk)
 		except TeachersAttendance.DoesNotExist:
 			raise Http404
+
 	def get(self, request, pk, format=None):
 		attendance = self.get_object(pk)
 		serializer = TeachersAttendanceSerializer(attendance)
@@ -60,6 +63,16 @@ class TeachersAttendanceDetailView(views.APIView):
 		attendance.delete()
 		return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def teacherAttendanceView(request, pk):
+	try:
+		teacher = Teacher.objects.get(pk=pk)
+	except TeachersAttendance.DoesNotExist:
+		raise Http404
+	attendance = TeachersAttendance.objects.filter(teacher=teacher)
+	
+	serializer = TeachersAttendanceSerializer(attendance, many=True)
+	return Response({'teacher-attendance': serializer.data})
 
 class TeachersAttendanceBulkCreateView(generics.CreateAPIView):
 	serializer_class = TeachersAttendanceSerializer
