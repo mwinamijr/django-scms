@@ -74,6 +74,14 @@ def teacherAttendanceView(request, pk):
 	serializer = TeachersAttendanceSerializer(attendance, many=True)
 	return Response({'teacher-attendance': serializer.data})
 
+@api_view(['GET'])
+def dailyAttendanceView(request):
+	date = request.query_params.get('date')
+	attendance = TeachersAttendance.objects.filter(date=date)
+	
+	serializer = TeachersAttendanceSerializer(attendance, many=True)
+	return Response({'teacher-attendance': serializer.data})
+
 class TeachersAttendanceBulkCreateView(generics.CreateAPIView):
 	serializer_class = TeachersAttendanceSerializer
 	queryset = TeachersAttendance.objects.all()
