@@ -19,6 +19,6 @@ urlpatterns = [
 	path('teachers-attendance/', TeachersAttendanceListView.as_view(), name="teachers-attendance-list"),
     path('teachers-attendance/<int:pk>/', TeachersAttendanceDetailView.as_view(), name="teachers-attendance-detail"),
     path('teacher-attendance/<int:pk>/', teacherAttendanceView, name="teacher-attendance-list"),
-    path('teacher-attendances/', dailyAttendanceView, name="teacher-attendance-by-date"),
+    path('teachers-attendances/', dailyAttendanceView, name="teacher-attendance-by-date"),
 	path("teachers-attendance/upload/<filename>/", TeachersAttendanceBulkUploadView.as_view(), name="teachers-attendance-bulk"),
 ]
