@@ -19,17 +19,11 @@ class TeachersAttendanceSerializer(serializers.ModelSerializer):
 		model = TeachersAttendance
 		fields = "__all__"
 
-	def get_total_days_attended(self, obj):
+	def get_total_days_attended(self, obj, days=0):
 		
-		#print(obj)
 		teacher = obj.teacher
-		attendance = TeachersAttendance.objects.filter(teacher=teacher)
-		#print(attendance)
-		days = 0
-		for i in attendance:
-			if i.status.name == "Present":
-				days += 1
-		#days = TeachersAttendanceSerializer(obj.date, many=True).data
+		days = len(TeachersAttendance.objects.filter(teacher=teacher, status=1))
+		
 		return days
 '''
 	def get_teacher(self, obj):
