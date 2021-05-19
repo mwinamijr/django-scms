@@ -1,6 +1,6 @@
 from django.db import models
 import httpagentparser
-
+from django.conf import settings
 
 from users.models import CustomUser, Teacher
 from sis.models import GradeLevel, ClassLevel
@@ -64,3 +64,15 @@ class ClassSection(models.Model):
     def __str__(self):
         return f"{self.classLevel} {self.section}"
 
+class ClassJournal(models.Model):
+    date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
+    class_section = models.ForeignKey(ClassSection, on_delete=models.SET_NULL, blank=True, null=True)
+    periods = models.ForeignKey('schedule.DailyTimeTable', on_delete=models.SET_NULL, blank=True, null=True)
+    absent_students = models.ManyToManyField('sis.Student', blank=True)
+
+    class Meta:
+        ordering = ('-date',)
+        unique_together = ('date',)
+
+    def __str__(self):
+        return f"{self.date}-{self.class_section} "
