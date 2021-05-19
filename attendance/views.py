@@ -73,12 +73,13 @@ def teacherAttendanceView(request, pk):
 	attendances = TeachersAttendance.objects.filter(teacher=teacher)
 	attended_days = len(TeachersAttendance.objects.filter(teacher=teacher, date__gte='2021-04-01', date__lte='2021-04-30', status=1))
 	absent_days = len(TeachersAttendance.objects.filter(teacher=teacher, date__gte='2021-04-01', date__lte='2021-04-30', status=2))
+	sick_days = len(TeachersAttendance.objects.filter(teacher=teacher, date__gte='2021-04-01', date__lte='2021-04-30', status=3))
 
 	serializer = TeachersAttendanceSerializer(attendances, many=True)
 	return Response({
-		'teacher-attendance': serializer.data,
+		'teacher': serializer.data[0]['teacher'],
 		'attended_days': attended_days,
-		'absent_days': absent_days
+		'absent_days': absent_days + sick_days
 		})
 
 	####
