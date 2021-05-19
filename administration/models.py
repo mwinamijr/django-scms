@@ -52,6 +52,9 @@ class ClassTeacher(models.Model):
     class Meta:
         unique_together = ('teacher', 'class_section')
 
+    def __str__(self):
+        return f"{self.teacher}-{self.class_section}"
+
 class ClassSection(models.Model):
     classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
     section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
@@ -60,3 +63,4 @@ class ClassSection(models.Model):
 
     def __str__(self):
         return f"{self.classLevel} {self.section}"
+

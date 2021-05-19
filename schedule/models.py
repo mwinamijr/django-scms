@@ -3,6 +3,7 @@ import httpagentparser
 
 from users.models import Teacher
 from sis.models import GradeLevel, ClassLevel
+from administration.models import ClassSection
 
 TIMETABLE_CHOICES = [
     ("1", "07:20:00 - 08:00:00"),
@@ -28,12 +29,13 @@ class Period(models.Model):
     _class = models.ForeignKey(ClassLevel, blank=True, default=1, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
     period_time = models.CharField(max_length=100, choices=TIMETABLE_CHOICES, blank=True, null=True)
+    taught = models.BooleanField(default=False)
 
     class Meta:
         ordering = ('period_time',)
 
     def __str__(self):
-        return f"{self.subject} - {self.teacher}"
+        return f"{self.subject} - {self.teacher}-{self._class}"
 
 
 class DailyTimeTable(models.Model):
@@ -47,7 +49,7 @@ class DailyTimeTable(models.Model):
     period8 = models.ForeignKey(Period, related_name='period8', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.period1} / {self.period8} "
+        return f"{self.period1} / {self.period8}"
 
 
 class WeeklyTimeTable(models.Model):
@@ -59,4 +61,4 @@ class WeeklyTimeTable(models.Model):
     saturday = models.OneToOneField(DailyTimeTable,related_name='saturday', on_delete=models.CASCADE, blank=True, null=True)
  
     def __str__(self):
-        return "Form One"
+        return f"{self.monday.period1._class}"
