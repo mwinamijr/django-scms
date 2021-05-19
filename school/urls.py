@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
      path('', TemplateView.as_view(template_name='index.html')),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/admin/', include('api.journals.urls')),
     path('api/administration/', include('api.administration.urls')),
     path('api/attendance/', include('api.attendance.urls')),
     path('api/users/', include('api.users.urls')),
