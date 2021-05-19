@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from attendance.views import (
 	AttendanceStatusViewSet, TeachersAttendanceViewSet, 
 	TeachersAttendanceListView, TeachersAttendanceDetailView,
-	TeachersAttendanceBulkUploadView, teacherProfileView, 
+	TeachersAttendanceBulkUploadView, 
 	dailyAttendanceView,)
 
 '''
@@ -19,7 +19,6 @@ urlpatterns = [
 urlpatterns = [
 	path('teachers-attendance/', TeachersAttendanceListView.as_view(), name="teachers-attendance-list"),
     path('teachers-attendance/<int:pk>/', TeachersAttendanceDetailView.as_view(), name="teachers-attendance-detail"),
-    path('teacher-profile/<int:pk>/', teacherProfileView, name="teacher-profile"),
     path('teachers-attendances/', dailyAttendanceView, name="teacher-attendance-by-date"),
 	path("teachers-attendance/upload/<filename>/", TeachersAttendanceBulkUploadView.as_view(), name="teachers-attendance-bulk"),
 ]

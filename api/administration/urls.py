@@ -10,7 +10,13 @@ from attendance.views import (
 from schedule.views import (
 	PeriodViewSet, SubjectViewSet, DailyTimeTableViewSet, WeeklyTimeTableViewSet)
 
+from users.views import AccountantViewSet, TeacherViewSet
+
+
+
 router = DefaultRouter()
+router.register(r'users/accountants', AccountantViewSet)
+router.register(r'users/teachers', TeacherViewSet)
 router.register(r'articles', ArticleViewSet)
 router.register(r'carousel', CarouselImageViewSet)
 router.register(r'status', AttendanceStatusViewSet)
