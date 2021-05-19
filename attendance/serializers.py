@@ -13,19 +13,19 @@ class AttendanceStatusSerializer(serializers.ModelSerializer):
 class TeachersAttendanceSerializer(serializers.ModelSerializer):
 	#teacher = serializers.SerializerMethodField(read_only=True)
 	#status = serializers.SerializerMethodField(read_only=True)
-	total_days_attended = serializers.SerializerMethodField(read_only=True)
+	#total_days_attended = serializers.SerializerMethodField(read_only=True)
 
 	class Meta:
 		model = TeachersAttendance
 		fields = "__all__"
-
+'''
 	def get_total_days_attended(self, obj, days=0):
 		
 		teacher = obj.teacher
 		days = len(TeachersAttendance.objects.filter(teacher=teacher, status=1))
 		
 		return days
-'''
+
 	def get_teacher(self, obj):
 		teacher = obj.teacher
 		serializer = TeacherSerializer(teacher, many=False)

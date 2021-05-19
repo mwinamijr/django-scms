@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from attendance.views import (
 	AttendanceStatusViewSet, TeachersAttendanceViewSet, 
 	TeachersAttendanceListView, TeachersAttendanceDetailView,
-	TeachersAttendanceBulkUploadView, teacherAttendanceView, dailyAttendanceView)
+	TeachersAttendanceBulkUploadView, teacherAttendanceView, 
+	dailyAttendanceView,)
 
 '''
 router = DefaultRouter()

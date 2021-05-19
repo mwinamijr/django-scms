@@ -69,10 +69,19 @@ def teacherAttendanceView(request, pk):
 		teacher = Teacher.objects.get(pk=pk)
 	except TeachersAttendance.DoesNotExist:
 		raise Http404
-	attendance = TeachersAttendance.objects.filter(teacher=teacher)
-	
-	serializer = TeachersAttendanceSerializer(attendance, many=True)
-	return Response({'teacher-attendance': serializer.data})
+	####
+	attendances = TeachersAttendance.objects.filter(teacher=teacher)
+	attended_days = len(TeachersAttendance.objects.filter(teacher=teacher, date__gte='2021-04-01', date__lte='2021-04-30', status=1))
+	absent_days = len(TeachersAttendance.objects.filter(teacher=teacher, date__gte='2021-04-01', date__lte='2021-04-30', status=2))
+
+	serializer = TeachersAttendanceSerializer(attendances, many=True)
+	return Response({
+		'teacher-attendance': serializer.data,
+		'attended_days': attended_days,
+		'absent_days': absent_days
+		})
+
+	####
 
 @api_view(['GET'])
 def dailyAttendanceView(request):
