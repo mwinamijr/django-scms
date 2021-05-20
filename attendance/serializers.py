@@ -3,6 +3,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 
 from .models import AttendanceStatus, TeachersAttendance, StudentAttendance
+from users.serializers import TeacherSerializer
 
 class AttendanceStatusSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -10,33 +11,28 @@ class AttendanceStatusSerializer(serializers.ModelSerializer):
 		fields = "__all__"
 
 class TeachersAttendanceSerializer(serializers.ModelSerializer):
+	#teacher = serializers.SerializerMethodField(read_only=True)
+	#status = serializers.SerializerMethodField(read_only=True)
+	#total_days_attended = serializers.SerializerMethodField(read_only=True)
+
 	class Meta:
 		model = TeachersAttendance
 		fields = "__all__"
+'''
+	def get_total_days_attended(self, obj, days=0):
+		
+		teacher = obj.teacher
+		days = len(TeachersAttendance.objects.filter(teacher=teacher, status=1))
+		
+		return days
 
-	def create(self, request):
-		data = request.data
-		xlfile = data["teachers-attendance"]
+	def get_teacher(self, obj):
+		teacher = obj.teacher
+		serializer = TeacherSerializer(teacher, many=False)
+		return serializer.data
 
-		print("xfile: ",xlfile)
-		wb = load_workbook(xlfile)
-		ws = wb.active
-		print(ws.title)
-
-		teacherz = []
-		for row in ws.iter_rows(min_row=2, max_col=9, max_row=12, values_only=True):
-			teacherz.append(row)
-			#print(api)
-		print(teacherz)
-		'''	
-		students = []
-		for i in range(len(studentz)):
-			student = {
-				"date": f"{studentz[i][0]}",
-				"time_in": f"{studentz[i][1]}",
-				"time_out": f"{studentz[i][2]}",
-				"teacher": f"{studentz[i][3]}",
-				"status": f"{studentz[i][4]}",
-					}
-			students.append(student)
+	def get_status(self, obj):
+		status = obj.status
+		serializer = AttendanceStatusSerializer(status, many=False)
+		return serializer.data
 		'''

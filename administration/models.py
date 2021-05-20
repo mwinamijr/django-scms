@@ -1,6 +1,6 @@
 from django.db import models
 import httpagentparser
-
+from django.conf import settings
 
 from users.models import CustomUser, Teacher
 from sis.models import GradeLevel, ClassLevel
@@ -14,6 +14,7 @@ class Article(models.Model):
 
 	def __str__(self):
 		return self.title
+        
 
 class CarouselImage(models.Model):
 	title = models.CharField(max_length=150, blank=True, null=True)
@@ -42,6 +43,7 @@ class AccessLog(models.Model):
         except:
             return "Unknown"
 
+
 class ClassTeacher(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
     class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
@@ -50,8 +52,27 @@ class ClassTeacher(models.Model):
     class Meta:
         unique_together = ('teacher', 'class_section')
 
+    def __str__(self):
+        return f"{self.teacher}-{self.class_section}"
+
 class ClassSection(models.Model):
     classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
     section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'),('C', 'C')))
-    teacher = models.ForeignKey(ClassTeacher, on_delete=models.CASCADE, blank=True, null=True)
     students = models.ManyToManyField('sis.Student', blank=True)
+    year = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.classLevel} {self.section}"
+
+class ClassJournal(models.Model):
+    date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
+    class_section = models.ForeignKey(ClassSection, on_delete=models.SET_NULL, blank=True, null=True)
+    periods = models.ForeignKey('schedule.DailyTimeTable', on_delete=models.SET_NULL, blank=True, null=True)
+    absent_students = models.ManyToManyField('sis.Student', blank=True)
+
+    class Meta:
+        ordering = ('-date',)
+        unique_together = ('date',)
+
+    def __str__(self):
+        return f"{self.date}-{self.class_section} "

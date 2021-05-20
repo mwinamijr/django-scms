@@ -1,8 +1,9 @@
 from django.db import models
+from django.conf import settings
 
 from sis.models import Student
 from users.models import CustomUser, Teacher, Accountant
-
+import datetime
 
 # Create your models here.
 class AttendanceStatus(models.Model):
@@ -21,10 +22,10 @@ class AttendanceStatus(models.Model):
 
 
 class TeachersAttendance(models.Model):
-    date = models.DateField(auto_now_add=False)
+    date = models.DateField(auto_now_add=False ,blank=True, null=True, validators=settings.DATE_VALIDATORS)
     teacher = models.ForeignKey(Teacher, blank=True, on_delete=models.CASCADE)
-    time_in = models.TimeField(auto_now_add=False, blank=True)
-    time_out = models.TimeField(auto_now_add=False, blank=True)
+    time_in = models.TimeField(auto_now_add=False, blank=True, null=True)
+    time_out = models.TimeField(auto_now_add=False, blank=True, null=True)
     status = models.ForeignKey(AttendanceStatus, blank=True, null=True, on_delete=models.CASCADE)
     notes = models.CharField(max_length=500, blank=True)
 
@@ -39,21 +40,27 @@ class TeachersAttendance(models.Model):
     def edit(self):
         return "Edit"
     
-    #def save(self, *args, **kwargs):
-    #    """Don't save Present """
-    #    present, created = AttendanceStatus.objects.get_or_create(name="Present")
-    #    if self.status != present:
-    #        super(TeachersAttendance, self).save(*args, **kwargs)
-    #    else:
-    #        try: self.delete()
-    #        except: pass
+    '''
+    def save(self, *args, **kwargs):
+        """Update for those who are late """
+        present, created = AttendanceStatus.objects.get_or_create(name="Present")
+        
+        if self.status == present:
+            if self.time_in >= datetime.time.fromisoformat("07:00:00"):
+                present.late = True
+                print(self.status)
+                print(present.late)
+                super(TeachersAttendance, self).save(*args, **kwargs)
+        else:
+            pass
+    '''
 
 class StudentAttendance(models.Model):
     """
     This is daily students attendance 
     """
     student = models.ForeignKey(Student, blank=True, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=False, blank=True)
+    date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
     ClassSection = models.ForeignKey('administration.ClassSection', on_delete=models.CASCADE, blank=True, null=True)
     status = models.ForeignKey(AttendanceStatus, blank=True, null=True, on_delete=models.CASCADE)
     notes = models.CharField(max_length=500, blank=True)
