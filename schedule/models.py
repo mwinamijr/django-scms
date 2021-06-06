@@ -32,7 +32,7 @@ class Period(models.Model):
     taught = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ('period_time',)
+        ordering = ('id', 'period_time',)
 
     def __str__(self):
         return f"{self.subject} - {self.teacher}-{self._class}"

@@ -34,7 +34,7 @@ class ClassJournalDetailView(views.APIView):
 	def get_object(self, pk):
 		try:
 			return ClassJournal.objects.get(pk=pk)
-		except TeachersAttendance.DoesNotExist:
+		except ClassJournal.DoesNotExist:
 			raise Http404
 
 	def get(self, request, pk, format=None):
