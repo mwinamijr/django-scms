@@ -7,6 +7,8 @@ from users.models import Teacher
 
 class Topic(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
+    _class = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -18,6 +20,7 @@ class SubTopic(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Assignment(models.Model):
     title = models.CharField(max_length=50)
@@ -38,7 +41,7 @@ class GradedAssignment(models.Model):
 
 
 class Choice(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -60,8 +63,8 @@ class Question(models.Model):
 class ListOfSpecificExplanations(models.Model):
     sub_topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
-    explanation = models.TextField()
-    examples = models.ManyToManyField(Question)
+    explanation = models.TextField(blank=True, null=True)
+    examples = models.ManyToManyField(Question, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} {self.sub_topic}"
@@ -70,19 +73,17 @@ class ListOfSpecificExplanations(models.Model):
 class Concept(models.Model):
     sub_topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
-    explanation = models.TextField()
-    image = models.ImageField(verbose_name=None, upload_to="concept images")
-    list_of_explanations = models.ManyToManyField(ListOfSpecificExplanations)
+    explanation = models.TextField(blank=True, null=True)
+    image = models.ImageField(verbose_name=None, upload_to="concept images", blank=True, null=True)
+    list_of_explanations = models.ManyToManyField(ListOfSpecificExplanations, blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} {self.sub_topic}"
 
 
 class Note(models.Model):
-    _class = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
-    subject = models.OneToOneField(Subject, related_name='period', on_delete=models.CASCADE)
     sub_topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE, blank=True, null=True)
-    notes = models.ManyToManyField(Concept)
+    notes = models.ManyToManyField(Concept, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.subject} {self.sub_topic}"
+        return f"{self.sub_topic}"
