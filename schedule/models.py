@@ -16,13 +16,15 @@ TIMETABLE_CHOICES = [
     ("8", "12:20:00 - 13:00:00"),
 ]
 
+
 class Subject(models.Model):
-    code = models.IntegerField(primary_key=True,blank=True)
+    code = models.IntegerField(primary_key=True, blank=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     short_name = models.CharField(max_length=5, blank=True, null=True)
-    
+
     def __str__(self):
         return self.short_name
+
 
 class Period(models.Model):
     subject = models.OneToOneField(Subject, related_name='period', on_delete=models.CASCADE)
@@ -53,12 +55,18 @@ class DailyTimeTable(models.Model):
 
 
 class WeeklyTimeTable(models.Model):
-    monday = models.OneToOneField(DailyTimeTable,related_name='monday', on_delete=models.CASCADE, blank=True, null=True)
-    tuesday = models.OneToOneField(DailyTimeTable,related_name='tuesday', on_delete=models.CASCADE, blank=True, null=True)
-    wednesday = models.OneToOneField(DailyTimeTable,related_name='wednesday', on_delete=models.CASCADE, blank=True, null=True)
-    thursday = models.OneToOneField(DailyTimeTable,related_name='thursday', on_delete=models.CASCADE, blank=True, null=True)
-    friday = models.OneToOneField(DailyTimeTable,related_name='friday', on_delete=models.CASCADE, blank=True, null=True)
-    saturday = models.OneToOneField(DailyTimeTable,related_name='saturday', on_delete=models.CASCADE, blank=True, null=True)
- 
+    monday = models.OneToOneField(DailyTimeTable, related_name='monday', on_delete=models.CASCADE, blank=True,
+                                  null=True)
+    tuesday = models.OneToOneField(DailyTimeTable, related_name='tuesday', on_delete=models.CASCADE, blank=True,
+                                   null=True)
+    wednesday = models.OneToOneField(DailyTimeTable, related_name='wednesday', on_delete=models.CASCADE, blank=True,
+                                     null=True)
+    thursday = models.OneToOneField(DailyTimeTable, related_name='thursday', on_delete=models.CASCADE, blank=True,
+                                    null=True)
+    friday = models.OneToOneField(DailyTimeTable, related_name='friday', on_delete=models.CASCADE, blank=True,
+                                  null=True)
+    saturday = models.OneToOneField(DailyTimeTable, related_name='saturday', on_delete=models.CASCADE, blank=True,
+                                    null=True)
+
     def __str__(self):
         return f"{self.monday.period1._class}"

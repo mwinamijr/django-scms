@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'schedule.apps.ScheduleConfig',
     'sis.apps.SisConfig',
-    
+    'notes.apps.NotesConfig',
 ]
 
 MIDDLEWARE = [
