@@ -1,21 +1,26 @@
 from rest_framework import serializers
 
-from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassYear, Student, StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear, MessageToStudent
+from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassYear, Student, \
+    StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear, MessageToStudent
+
 
 class PhoneNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneNumber
         fields = "__all__"
 
+
 class EmergencyContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmergencyContact
         fields = "__all__"
 
+
 class EmergencyContactNumberSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmergencyContactNumber
         fields = "__all__"
+
 
 class GradeLevelSerializer(serializers.ModelSerializer):
     class Meta:
