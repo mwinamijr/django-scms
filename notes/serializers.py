@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from users.models import CustomUser as User
-from .models import Assignment, Question, Choice, GradedAssignment, Concept, Note, ListOfSpecificExplanations, Topic, \
+from .models import Assignment, Question, Choice, GradedAssignment, Concept, Note, SpecificExplanations, Topic, \
     SubTopic
 
 
@@ -105,25 +105,38 @@ class SubTopicSerializer(serializers.ModelSerializer):
 
 
 class ConceptSerializer(serializers.ModelSerializer):
+    list_of_explanations = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Concept
         fields = "__all__"
 
+    def get_list_of_explanations(self, obj):
+        list_of_explanation = obj.list_of_explanations
+        serializer = ListOfExplanationsSerializer(list_of_explanation, many=True)
+        return serializer.data
+
 
 class ListOfExplanationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ListOfSpecificExplanations
+        model = SpecificExplanations
         fields = "__all__"
 
 
 class NoteSerializer(serializers.ModelSerializer):
-    subtopic = serializers.SerializerMethodField(read_only=True)
+    sub_topic = serializers.SerializerMethodField(read_only=True)
+    notes = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Note
         fields = "__all__"
 
-    def get_subtopic(self, obj):
+    def get_sub_topic(self, obj):
         subtopic = obj.sub_topic
         serializer = SubTopicSerializer(subtopic, many=False)
+        return serializer.data['name']
+
+    def get_notes(self, obj):
+        note = obj.notes
+        serializer = ConceptSerializer(note, many=True)
         return serializer.data
