@@ -64,7 +64,7 @@ class SpecificExplanations(models.Model):
     sub_topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     explanation = models.TextField(blank=True, null=True)
-    examples = models.ManyToManyField(Question, blank=True, null=True)
+    examples = models.ManyToManyField(Question, blank=True)
 
     def __str__(self):
         return f"{self.name} {self.sub_topic}"
@@ -75,7 +75,7 @@ class Concept(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     explanation = models.TextField(blank=True, null=True)
     image = models.ImageField(verbose_name=None, upload_to="concept images", blank=True, null=True)
-    list_of_explanations = models.ManyToManyField(SpecificExplanations, blank=True, null=True)
+    list_of_explanations = models.ManyToManyField(SpecificExplanations, blank=True)
 
     def __str__(self):
         return f"{self.name} {self.sub_topic}"
@@ -83,7 +83,7 @@ class Concept(models.Model):
 
 class Note(models.Model):
     sub_topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE, blank=True, null=True)
-    notes = models.ManyToManyField(Concept, blank=True, null=True)
+    notes = models.ManyToManyField(Concept, blank=True)
 
     def __str__(self):
         return f"{self.sub_topic}"
