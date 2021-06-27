@@ -5,7 +5,8 @@ from users.serializers import UserSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
 	created_by = serializers.SerializerMethodField(read_only=True)
-	created_at = serializers.SerializerMethodField(read_only=True)
+	#created_at = serializers.SerializerMethodField(read_only=True)
+	content = serializers.SerializerMethodField(read_only=True)
 
 	class Meta:
 		model = Article
@@ -17,9 +18,9 @@ class ArticleSerializer(serializers.ModelSerializer):
 		
 		return serializer.data['first_name']
 	
-	def get_created_at(self, obj):
-		date = obj.created_at
-		return date
+	def get_content(self, obj):
+		content = obj.content
+		return content[:200]
 
 class CarouselImageSerializer(serializers.ModelSerializer):
 	class Meta:
