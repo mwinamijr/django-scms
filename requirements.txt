@@ -16,7 +16,7 @@ django-cors-headers==3.5.0
 django-debug-toolbar==3.2.1
 django-heroku==0.3.1
 djangorestframework==3.12.1
-djangorestframework-simplejwt==4.4.0
+djangorestframework-simplejwt==4.7.0
 et-xmlfile==1.1.0
 gunicorn==20.0.4
 html5lib==1.0.1
