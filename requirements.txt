@@ -11,7 +11,7 @@ defusedxml==0.6.0
 distlib==0.3.0
 distro==1.4.0
 dj-database-url==0.5.0
-Django==3.1.8
+Django==3.1.12
 django-cors-headers==3.5.0
 django-debug-toolbar==3.2.1
 django-heroku==0.3.1
