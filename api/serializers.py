@@ -6,19 +6,20 @@ from users.serializers import UserSerializer
 class ArticleSerializer(serializers.ModelSerializer):
 	created_by = serializers.SerializerMethodField(read_only=True)
 	#created_at = serializers.SerializerMethodField(read_only=True)
-	content = serializers.SerializerMethodField(read_only=True)
+	short_content = serializers.SerializerMethodField(read_only=True)
 
 	class Meta:
 		model = Article
-		fields = ['id', 'title', 'content', 'picture', 'created_at', 'created_by']
+		fields = ['id', 'title', 'content', 'short_content', 'picture', 'created_at', 'created_by']
 
 	def get_created_by(self, obj):
 		user = obj.created_by
 		serializer = UserSerializer(user, many=False)
-		
-		return serializer.data['first_name']
-	
-	def get_content(self, obj):
+		if(serializer.data['first_name']):
+			return serializer.data['first_name']
+		return serializer.data['email']
+
+	def get_short_content(self, obj):
 		content = obj.content
 		return content[:200]
 
