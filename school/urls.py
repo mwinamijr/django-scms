@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/administration/', include('api.administration.urls')),
     path('api/attendance/', include('api.attendance.urls')),
     path('api/blog/', include('api.blog.urls')),
+    path('api/finance/', include('api.finance.urls')),
     path('api/notes/', include('api.notes.urls')),
     path('api/users/', include('api.users.urls')),
     path('api/sis/', include('api.sis.urls')),
