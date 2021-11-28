@@ -41,10 +41,11 @@ INSTALLED_APPS = [
     'administration.apps.AdministrationConfig',
     'api.apps.ApiConfig',
     'attendance.apps.AttendanceConfig',
-    'users.apps.UsersConfig',
+    'finance.apps.FinanceConfig',
+    'notes.apps.NotesConfig',
     'schedule.apps.ScheduleConfig',
     'sis.apps.SisConfig',
-    'notes.apps.NotesConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hayatul',
         'USER': 'postgres',
-        'PASSWORD': 'test123',
+        'PASSWORD': 'Tech.365#',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Allocation, Receipt
 
-# Register your models here.
+admin.site.register(Allocation)
+admin.site.register(Receipt)
