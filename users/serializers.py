@@ -5,9 +5,17 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Accountant, Teacher, CustomUser
 
 class AccountantSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Accountant
         fields = "__all__"
+
+    def get_user(self, obj):
+        user = obj.user
+        serializer = UserSerializer(user, many=False)
+        user = serializer.data['first_name'] + ' ' + serializer.data['last_name']
+        return user
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
