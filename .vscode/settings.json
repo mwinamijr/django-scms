@@ -1,13 +1,14 @@
 {
   "python.pythonPath": "C:\\Python39\\python.exe",
   "editor.formatOnSave": true,
-  "python.linting.pep8Enabled": true,
+  "python.linting.pycodestyleEnabled": false,
   "python.linting.pylintPath": "pylint",
   "python.linting.pylintArgs": ["--load-plugins", "pylint_django"],
   "python.linting.pylintEnabled": true,
   "python.venvPath": "${workspaceFolder}env\\Scripts\\python.exe",
-  "python.linting.pep8Args": ["--ignore=E501"],
+  "python.linting.pycodestyleArgs": ["--ignore=E501"],
   "files.exclude": {
     "**/*.pyc": true
-  }
+  },
+  "python.linting.enabled": true
 }
