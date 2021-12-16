@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
 from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassYear, Student, \
     StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear, MessageToStudent
@@ -65,9 +66,12 @@ class MessageToStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    grad_date = serializers.SerializerMethodField(read_only=True)
+    bday = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Student
         fields = "__all__"
+    
 
 
 class FileUploadSerializer(serializers.ModelSerializer):
