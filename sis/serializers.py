@@ -66,13 +66,19 @@ class MessageToStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    grad_date = serializers.SerializerMethodField(read_only=True)
-    bday = serializers.SerializerMethodField(read_only=True)
+    #grad_date = serializers.SerializerMethodField(read_only=True)
+    #bday = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Student
         fields = "__all__"
+    '''
+    def get_grad_date(self, obj):
+        grad_date = obj.grad_date
+        return grad_date
     
-
-
+    def get_bday(self, obj):
+        bday = obj.bday
+        return bday
+    '''
 class FileUploadSerializer(serializers.ModelSerializer):
     file = serializers.FileField()
