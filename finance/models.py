@@ -21,7 +21,7 @@ class PaymentAllocation(models.Model):
 class Receipt(models.Model):
     receipt_no = models.IntegerField(unique=True)
     date = models.DateTimeField(auto_now_add=True)
-    payer = models.CharField(max_length=255)
+    payer = models.CharField(max_length=255, null=True)
     paid_for = models.ForeignKey(Allocation,  on_delete=models.SET_NULL, blank=True, null=True)
     student = models.ForeignKey(Student,  on_delete=models.SET_NULL, blank=True, null=True)
     amount = models.IntegerField()

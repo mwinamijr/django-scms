@@ -15,22 +15,28 @@ from django.http import Http404
 from attendance.models import TeachersAttendance
 from attendance.serializers import (TeachersAttendanceSerializer)
 
-from .serializers import UserSerializer, UserSerializerWithToken
 from .models import CustomUser as User
 
 from schedule.models import Period, WeeklyTimeTable, DailyTimeTable
 
 from .models import Accountant, Teacher
-from .serializers import (
-	AccountantSerializer, TeacherSerializer)
+from .serializers import ( UserSerializer, UserSerializerWithToken,
+	AccountantSerializer, AccountantSerializerWithToken, TeacherSerializer)
 
-class AccountantViewSet(viewsets.ModelViewSet):
-	queryset = Accountant.objects.all()
-	serializer_class = AccountantSerializer
 
-class TeacherViewSet(viewsets.ModelViewSet):
-	queryset = Teacher.objects.all()
-	serializer_class = TeacherSerializer
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        serializer = UserSerializerWithToken(self.user).data
+        for k, v in serializer.items():
+            data[k] = v
+
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['GET'])
@@ -77,20 +83,6 @@ def teacherProfileView(request, pk):
 		})
 
 
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        serializer = UserSerializerWithToken(self.user).data
-        for k, v in serializer.items():
-            data[k] = v
-
-        return data
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['POST'])
