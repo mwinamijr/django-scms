@@ -2,7 +2,7 @@ from django.db import models
 
 from schedule.models import Subject
 from sis.models import ClassLevel, Student
-from users.models import Teacher
+from users.models import CustomUser as User
 
 
 class Topic(models.Model):
@@ -24,7 +24,7 @@ class SubTopic(models.Model):
 
 class Assignment(models.Model):
     title = models.CharField(max_length=50)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

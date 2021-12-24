@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from users.models import CustomUser as User
-from .models import Assignment, Question, Choice, GradedAssignment, Concept, Note, SpecificExplanations, Topic, \
-    SubTopic
+from .models import (Assignment, Question, Choice, GradedAssignment, Concept, 
+    Note, SpecificExplanations, Topic, SubTopic)
 
 
 class StringSerializer(serializers.StringRelatedField):
