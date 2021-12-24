@@ -32,14 +32,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
+    user_type = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'token']
+        fields = ['id', 'email', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'user_type', 'token']
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+    
+    def get_user_type(self, obj):
+        serializer_data = UserSerializer(obj).data
+        #isAdmin = serializer_data.get('isAdmin')
+        isAccountant = serializer_data.get('isAccountant')
+        isTeacher = serializer_data.get('isTeacher')
+        if isAccountant:
+            return {'isAccountant': isAccountant}
+        else:
+            return {'isTeacher': isTeacher}
 
 class AccountantSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
