@@ -10,12 +10,13 @@ class PhoneNumber(models.Model):
 
 
 class EmergencyContact(models.Model):
-    fname = models.CharField(max_length=255, verbose_name="First Name")
-    mname = models.CharField(max_length=255, blank=True, null=True, verbose_name="Middle Name")
-    lname = models.CharField(max_length=255, verbose_name="Last Name")
+    first_name = models.CharField(max_length=255, verbose_name="First Name")
+    middle_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Middle Name")
+    last_name = models.CharField(max_length=255, verbose_name="Last Name")
     relationship_to_student = models.CharField(max_length=500, blank=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     state = models.CharField(max_length=255, blank=True, null=True)
+    street = models.CharField(max_length=255, blank=True, null=True)
     post_code = models.CharField(max_length=10, blank=True, null=True)
     email = models.EmailField(blank=True)
     primary_contact = models.BooleanField(default=True, help_text="This contact is where mailings should be sent to. In the event of an emergency, this is the person that will be contacted first.")
@@ -23,11 +24,11 @@ class EmergencyContact(models.Model):
     sync_schoolreach = models.BooleanField(help_text="Sync this contact with schoolreach",default=True)
 
     class Meta:
-        ordering = ('primary_contact', 'lname')
+        ordering = ('primary_contact', 'last_name')
         verbose_name = "Student Contact"
 
     def __str__(self):
-        txt = self.fname + " " + self.lname
+        txt = self.first_name + " " + self.last_name
         for number in self.emergencycontactnumber_set.all():
             txt += " " + str(number)
         return txt
@@ -41,7 +42,7 @@ class EmergencyContact(models.Model):
         There is another check on Student in case all contacts where deleted"""
         if self.primary_contact:
             for student in self.student_set.all():
-                student.parent_guardian = self.fname + " " + self.lname
+                student.parent_guardian = self.first_name + " " + self.last_name
                 student.city = self.city
                 student.state = self.state
                 student.post_code = self.post_code
@@ -119,14 +120,14 @@ class ClassLevel(models.Model):
 
 class Student(models.Model):
     addmission_number = models.IntegerField(unique=True, primary_key=True)
-    fname = models.CharField(max_length=150, blank=True, null=True, verbose_name="First Name")
-    mname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Middle Name")
-    lname = models.CharField(max_length=150, blank=True, null=True, verbose_name="Last Name")
+    first_name = models.CharField(max_length=150, null=True, verbose_name="First Name")
+    middle_name = models.CharField(max_length=150, null=True, verbose_name="Middle Name")
+    last_name = models.CharField(max_length=150,  null=True, verbose_name="Last Name")
     grad_date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
-    pic = models.ImageField(upload_to="student_pics", blank=True, null=True)
+    image = models.ImageField(upload_to="student_pics", blank=True, null=True)
     alert = models.CharField(max_length=500, blank=True, help_text="Warn any user who accesses this record with this text")
     sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
-    bday = models.DateField(blank=True, null=True, verbose_name="Birth Date", validators=settings.DATE_VALIDATORS)
+    birthday = models.DateField(blank=True, null=True, verbose_name="Birth Date", validators=settings.DATE_VALIDATORS)
     grade_level = models.ForeignKey(
         GradeLevel,
         blank=True,
@@ -145,6 +146,7 @@ class Student(models.Model):
         verbose_name="Graduating Class", 
         blank=True, null=True)
     #date_dismissed = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
+    std_vii_number = models.CharField(max_length=15,blank=True, null=True, unique=True, help_text="For integration with outside databases")
     prems_number = models.CharField(max_length=15,blank=True, null=True, unique=True, help_text="For integration with outside databases")
 
     # These fields are cached from emergency contacts
@@ -152,6 +154,7 @@ class Student(models.Model):
     street = models.CharField(max_length=150, blank=True, editable=False)
     state = models.CharField(max_length=255, blank=True, editable=True, null=True)
     city = models.CharField(max_length=255, blank=True)
+    street = models.CharField(max_length=255, blank=True)
     post_code = models.IntegerField(blank=True, editable=False, null=True)
     parent_email = models.EmailField(blank=True, editable=False)
     notes = models.TextField(blank=True)
@@ -164,10 +167,10 @@ class Student(models.Model):
             ("viewStudent", "View student"),
             ("reports", "View reports"),
         )
-        ordering = ("addmission_number","fname", "lname")
+        ordering = ("addmission_number","first_name", "last_name")
 
     def __str__(self):
-        return f"{self.addmission_number}-{self.fname} {self.lname}"
+        return f"{self.addmission_number}-{self.first_name} {self.last_name}"
 
     def get_absolute_url():
         pass
@@ -182,7 +185,8 @@ class StudentHealthRecord(models.Model):
     record = models.TextField()
 
     def __str__(self):
-        return f"{self.student.fname} {self.student.lname}"
+        return f"{self.student.first_name} {self.student.last_name}"
+
 
 class GradeScale(models.Model):
     """ Translate a numeric grade to some other scale.

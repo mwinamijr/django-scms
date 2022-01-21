@@ -20,14 +20,13 @@ from .models import CustomUser as User
 from schedule.models import Period, WeeklyTimeTable, DailyTimeTable
 
 from .models import Accountant, Teacher
-from .serializers import ( UserSerializer, UserSerializerWithToken,
-	AccountantSerializer, AccountantSerializerWithToken, TeacherSerializer)
+from .serializers import ( UserSerializer, UserSerializerWithToken,)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-
+        print(data)
         serializer = UserSerializerWithToken(self.user).data
         for k, v in serializer.items():
             data[k] = v
