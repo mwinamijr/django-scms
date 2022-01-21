@@ -1,5 +1,6 @@
 from rest_framework import generics, views
 from rest_framework.parsers import FileUploadParser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
@@ -48,6 +49,7 @@ class StudentListView(views.APIView):
 	"""
     List all students, or create a new student.
     """
+	permission_classes = [IsAuthenticated]
 	def get(self, request, format=None):
 		students = Student.objects.all()
 		serializer = StudentSerializer(students, many=True)
@@ -61,6 +63,7 @@ class StudentListView(views.APIView):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class StudentDetailView(views.APIView):
+	permission_classes = [IsAuthenticated]
 	def get_object(self, pk):
 		try:
 			return Student.objects.get(pk=pk)
