@@ -8,27 +8,70 @@
 </head>
 
 <body class="container">
-  <div>
-    <h1>Hayatul Islamiya Complex API System</h1>
+  <div class="container-fluid">
+    <h1 class="text-center">Hayatul Islamiya Complex API System</h1>
 
     <h4>Important urls</h4>
-    <div>
-      <h6>Links</h6>
-      <ul>
-        <li><a href="/admin/">ADMIN</a></li>
-      </ul>
-      <h6>API Links</h6>
-      <ul>
-        <li><a href="/api/users/">USERS</a></li>
-        <li><a href="/api/blog/articles/">ARTICLES</a></li>
-        <li><a href="/api/attendance/">ATTENDANCE</a></li>
-        <li><a href="/api/assignments/">ASSIGNMENTS</a></li>
-        <li><a href="/api/notes/">NOTES</a></li>
-        <li><a href="/api/administration/">ADMINISTRATION</a></li>
-        <li><a href="/api/users/">ADMIN</a></li>
-      </ul>
+    <div class="row">
+      <div>
+        <h6>Links</h6>
+        <ul>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/admin/">
+              <span data-feather="home"></span>
+              ADMIN
+            </a>
+          </li>
+        </ul>
+        <h6>API Links</h6>
+      </div>
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3">
+
+          <ul>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/users/">
+                <span data-feather="home"></span>
+                USERS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/sis/students/">
+                <span data-feather="home"></span>
+                STUDENTS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/attendance/">
+                <span data-feather="home"></span>
+                ATTENDANCE
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/assignments/">
+                <span data-feather="home"></span>
+                ASSIGNMENTS
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/notes/">
+                <span data-feather="home"></span>
+                NOTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/api/administration/">
+                <span data-feather="home"></span>
+                ADMINISTRATION
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
   </div>
+
+
 </body>
 
 </html>
