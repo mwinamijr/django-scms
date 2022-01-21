@@ -66,19 +66,31 @@ class MessageToStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    #grad_date = serializers.SerializerMethodField(read_only=True)
+    grade_level = serializers.SerializerMethodField(read_only=True)
+    class_level = serializers.SerializerMethodField(read_only=True)
+    class_of_year = serializers.SerializerMethodField(read_only=True)
+    emergency_contacts = serializers.SerializerMethodField(read_only=True)
     #bday = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Student
         fields = "__all__"
-    '''
-    def get_grad_date(self, obj):
-        grad_date = obj.grad_date
-        return grad_date
     
-    def get_bday(self, obj):
-        bday = obj.bday
-        return bday
-    '''
+    def get_grade_level(self, obj):
+        grade_level = obj.grade_level
+        return grade_level.name
+    
+    def get_class_level(self, obj):
+        class_level = obj.class_level
+        return class_level.name
+
+    def get_class_of_year(self, obj):
+        class_of_year = obj.class_of_year
+        return class_of_year.year
+
+    def get_emergency_contacts(self, obj):
+        emergency_contacts = obj.emergency_contacts
+        print(emergency_contacts)
+        return f"{emergency_contacts}"
+    
 class FileUploadSerializer(serializers.ModelSerializer):
     file = serializers.FileField()

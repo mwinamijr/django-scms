@@ -45,6 +45,7 @@ class EmergencyContact(models.Model):
                 student.parent_guardian = self.first_name + " " + self.last_name
                 student.city = self.city
                 student.state = self.state
+                student.street = self.street
                 student.post_code = self.post_code
                 student.parent_email = self.email
                 student.save()
