@@ -18,6 +18,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_accountant = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    is_parent = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

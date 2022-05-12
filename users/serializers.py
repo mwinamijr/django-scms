@@ -9,10 +9,11 @@ class UserSerializer(serializers.ModelSerializer):
     isAdmin = serializers.SerializerMethodField(read_only=True)
     isAccountant = serializers.SerializerMethodField(read_only=True)
     isTeacher = serializers.SerializerMethodField(read_only=True)
+    isParent = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher']
+        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'isParent']
 
     def get_isAdmin(self, obj):
         return obj.is_staff
@@ -22,6 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_isTeacher(self, obj):
         return obj.is_teacher
+    
+    def get_isParent(self, obj):
+        return obj.is_parent
 
     def get_username(self, obj):
         name = str(obj.first_name) + str(obj.last_name)
@@ -44,13 +48,15 @@ class UserSerializerWithToken(UserSerializer):
     
     def get_user_type(self, obj):
         serializer_data = UserSerializer(obj).data
-        #isAdmin = serializer_data.get('isAdmin')
         isAccountant = serializer_data.get('isAccountant')
         isTeacher = serializer_data.get('isTeacher')
+        isParent = serializer_data.get('isParent')
         if isAccountant:
             return {'isAccountant': isAccountant}
-        else:
+        elif isTeacher:
             return {'isTeacher': isTeacher}
+        else:
+            return {'isParent': isParent}
 
 class AccountantSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField(read_only=True)
