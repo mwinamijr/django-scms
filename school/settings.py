@@ -143,7 +143,7 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = BASE_DIR / 'static/images'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
