@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassYear, Student, \
+from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassLevel, ClassYear, Student, \
     StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear, MessageToStudent
 
 
@@ -66,26 +66,37 @@ class MessageToStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    grade_level = serializers.SerializerMethodField(read_only=True)
-    class_level = serializers.SerializerMethodField(read_only=True)
-    class_of_year = serializers.SerializerMethodField(read_only=True)
+    #grade_level = serializers.SerializerMethodField(read_only=True)
+    #class_level = serializers.SerializerMethodField(read_only=True)
+    #class_of_year = serializers.SerializerMethodField(read_only=True)
     #emergency_contacts = serializers.SerializerMethodField(read_only=True)
     #bday = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Student
         fields = "__all__"
-    
-    def get_grade_level(self, obj):
-        grade_level = obj.grade_level
-        return grade_level.name
-    
-    def get_class_level(self, obj):
-        class_level = obj.class_level
-        return class_level.name
 
-    def get_class_of_year(self, obj):
-        class_of_year = obj.class_of_year
-        return class_of_year.year
+    def bulk_create(self, request):
+        data = request.data
+        student = Student()
+        student.addmission_number = data['addmission_number']
+        student.first_name = data['first_name']
+        student.middle_name = data['middle_name']
+        student.last_name = data['last_name']
+        student.grade_level = GradeLevel.objects.get(name=data['grade_level'])
+        student.class_level = ClassLevel.objects.get(name=data['class_level'])
+        student.birthday = data['birthday']
+        print(data['birthday'][:10])
+        student.grad_date = data['grad_date']
+        student.region = data['region']
+        student.city= data['city']
+        student.street = data['street']
+        student.prems_number = data['prems_number']
+        student.sex = data['sex']
+        student.std_vii_number = data['std_vii_number']
+
+        #student.save()
+        return student
+
 
     
 class FileUploadSerializer(serializers.ModelSerializer):

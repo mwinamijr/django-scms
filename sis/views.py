@@ -18,38 +18,12 @@ from .serializers import (
     GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, MessageToStudentSerializer,StudentSerializer,
 	FileUploadSerializer
 	)
-'''
-class PhoneNumberViewSet(viewsets.ModelViewSet):
-	queryset = PhoneNumber.objects.all()
-	serializer_class = PhoneNumberSerializer
-
-class EmergencyContactViewSet(viewsets.ModelViewSet):
-	queryset = EmergencyContact.objects.all()
-	serializer_class = EmergencyContactSerializer
-
-
-class EmergencyContactNumberViewSet(viewsets.ModelViewSet):
-	queryset = EmergencyContactNumber.objects.all()
-	serializer_class = EmergencyContactNumberSerializer
-
-
-class GradeLevelViewSet(viewsets.ModelViewSet):
-	queryset = GradeLevel.objects.all()
-	serializer_class = GradeLevelSerializer
-
-
-class ClassYearViewSet(viewsets.ModelViewSet):
-	queryset = ClassYear.objects.all()
-	serializer_class = ClassYearSerializer
-'''
-
-
 
 class StudentListView(views.APIView):
 	"""
     List all students, or create a new student.
     """
-	permission_classes = [IsAuthenticated]
+	#permission_classes = [IsAuthenticated]
 	def get(self, request, format=None):
 		students = Student.objects.all()
 		serializer = StudentSerializer(students, many=True)
@@ -57,6 +31,9 @@ class StudentListView(views.APIView):
 
 	def post(self, request, format=None):
 		serializer = StudentSerializer(data=request.data)
+
+		print(serializer.is_valid())
+		print(request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)

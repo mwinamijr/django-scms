@@ -152,8 +152,7 @@ class Student(models.Model):
 
     # These fields are cached from emergency contacts
     parent_guardian = models.CharField(max_length=150, blank=True, editable=False)
-    street = models.CharField(max_length=150, blank=True, editable=False)
-    state = models.CharField(max_length=255, blank=True, editable=True, null=True)
+    region = models.CharField(max_length=255, blank=True, editable=True, null=True)
     city = models.CharField(max_length=255, blank=True)
     street = models.CharField(max_length=255, blank=True)
     post_code = models.IntegerField(blank=True, editable=False, null=True)
