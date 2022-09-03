@@ -72,9 +72,10 @@ class StudentBulkUploadView(views.APIView):
 	parser_class = [FileUploadParser]
 	def post(self, request, filename, format="xlsx"):
 		file_obj = request.data
+		print(request.data)
+		
 		xlfile = file_obj["filename"]
 
-		print(xlfile)
 		wb = load_workbook(xlfile)
 		ws = wb.active
 		print(ws.title)
@@ -88,12 +89,12 @@ class StudentBulkUploadView(views.APIView):
 		for i in range(len(studentz)):
 			student = {
 				"addmission_number": f"{studentz[i][0]}",
-				"fname": f"{studentz[i][1]}",
-				"mname": f"{studentz[i][2]}",
-				"lname": f"{studentz[i][3]}",
+				"first_name": f"{studentz[i][1]}",
+				"middle_name": f"{studentz[i][2]}",
+				"last_name": f"{studentz[i][3]}",
 				"grad_date": f"{studentz[i][4]}",
 				"sex": f"{studentz[i][5]}",
-				"bday": f"{studentz[i][6]}",
+				"birthday": f"{studentz[i][6]}",
 				"grade_level": f"{studentz[i][7]}",
 				"class_level": f"{studentz[i][8]}",	
 					}
