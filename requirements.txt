@@ -21,7 +21,7 @@ openpyxl==3.0.10
 Pillow==9.2.0
 progress==1.5
 psycopg2==2.9.3
-PyJWT==2.3.0
+PyJWT==2.4.0
 pyparsing==2.4.6
 python-decouple==3.3
 pytoml==0.1.21
