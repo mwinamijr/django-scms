@@ -23,12 +23,12 @@ class ReceiptSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Receipt
-        fields = "__all__"
+        fields = ('id', 'student', 'paid_for', 'received_by', 'date', 'payer', 'amount', 'receipt_no')
     
     def get_student(self, obj):
         student = obj.student
         serializer = StudentSerializer(student, many=False)
-        student = serializer.data['fname'] + " " + serializer.data['lname']
+        student = serializer.data['first_name'] + " " + serializer.data['last_name']
         return student
     
     def get_paid_for(self, obj):
@@ -46,10 +46,10 @@ class ReceiptSerializer(serializers.ModelSerializer):
 
 class PaymentSerializer(serializers.ModelSerializer):
     paid_for = serializers.SerializerMethodField(read_only=True)
-    received_by = serializers.SerializerMethodField(read_only=True)
+    paid_by = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = Receipt
+        model = Payment
         fields = "__all__"
     
     def get_paid_for(self, obj):
@@ -58,11 +58,11 @@ class PaymentSerializer(serializers.ModelSerializer):
         paid_for = serializer.data['name']
         return paid_for
 
-    def get_received_by(self, obj):
-        received_by = obj.received_by
-        serializer = AccountantSerializer(received_by, many=False)
-        received_by = serializer.data['user']
+    def get_paid_by(self, obj):
+        paid_by = obj.paid_by
+        serializer = AccountantSerializer(paid_by, many=False)
+        paid_by = serializer.data['user']
 
-        return received_by
+        return paid_by
 
 
