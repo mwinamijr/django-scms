@@ -18,7 +18,7 @@ lockfile==0.12.2
 mccabe==0.6.1
 msgpack==0.6.2
 openpyxl==3.0.10
-Pillow==9.2.0
+Pillow==9.3.0
 progress==1.5
 psycopg2==2.9.3
 PyJWT==2.3.0
