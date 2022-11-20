@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
 from .models import *
+from sis.models import Student
+from users.models import CustomUser
 from sis.serializers import StudentSerializer
 from users.serializers import AccountantSerializer
 
@@ -17,13 +19,13 @@ class PaymentAllocationSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ReceiptSerializer(serializers.ModelSerializer):
-    student = serializers.SerializerMethodField(read_only=True)
-    paid_for = serializers.SerializerMethodField(read_only=True)
-    received_by = serializers.SerializerMethodField(read_only=True)
+    student = serializers.SerializerMethodField()
+    paid_for = serializers.SerializerMethodField()
+    received_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Receipt
-        fields = ('id', 'student', 'paid_for', 'received_by', 'date', 'payer', 'amount', 'receipt_no')
+        fields = ('id', 'receipt_no', 'date', 'student', 'paid_for', 'payer', 'amount', 'received_by')
     
     def get_student(self, obj):
         student = obj.student
@@ -41,8 +43,22 @@ class ReceiptSerializer(serializers.ModelSerializer):
         received_by = obj.received_by
         serializer = AccountantSerializer(received_by, many=False)
         received_by = serializer.data['user']
-
         return received_by
+
+    def create(self, request):
+        data= request.data
+        receipt = Receipt()
+        receipt.receipt_no = data['receipt_no']
+        student = Student.objects.get(first_name=data['student'])
+        paid_for = Allocation.objects.get(name=data['paid_for'])
+        received_by = Accountant.objects.get(user=CustomUser.objects.get(first_name=data['received_by']))
+        receipt.payer = data['payer']
+        receipt.amount = data['amount']
+        receipt.student = student
+        receipt.paid_for = paid_for
+        receipt.received_by = received_by
+        receipt.save()
+        return receipt 
 
 class PaymentSerializer(serializers.ModelSerializer):
     paid_for = serializers.SerializerMethodField(read_only=True)

@@ -26,8 +26,10 @@ class ReceiptsListView(views.APIView):
 		print(request.data)
 		print(serializer.is_valid())
 		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
+			receipt = serializer.create(request)
+			if receipt:
+				#serializer.save()
+				return Response(status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ReceiptDetailView(views.APIView):
