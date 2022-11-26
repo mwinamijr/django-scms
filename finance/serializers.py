@@ -4,7 +4,7 @@ from .models import *
 from sis.models import Student
 from users.models import CustomUser
 from sis.serializers import StudentSerializer
-from users.serializers import AccountantSerializer
+from users.serializers import AccountantSerializer, UserSerializer
 
 class AllocationSerializer(serializers.ModelSerializer):
     
@@ -63,6 +63,7 @@ class ReceiptSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     paid_for = serializers.SerializerMethodField(read_only=True)
     paid_by = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Payment
@@ -81,4 +82,21 @@ class PaymentSerializer(serializers.ModelSerializer):
 
         return paid_by
 
+    def get_user(self, obj):
+        user = obj.user
+        serializer = UserSerializer(user, many=False)
+        user = serializer.data['first_name']
+        return user
 
+    def create(self, request):
+        data= request.data
+        payment = Payment()
+        payment.payment_no = data['payment_no']
+        paid_for = PaymentAllocation.objects.get(name=data['paid_for'])
+        paid_by = Accountant.objects.get(user=CustomUser.objects.get(first_name=data['paid_by']))
+        payment.paid_to = data['paid_to']
+        payment.amount = data['amount']
+        payment.paid_for = paid_for
+        payment.paid_by = paid_by
+        payment.save()
+        return payment

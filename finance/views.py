@@ -72,8 +72,10 @@ class PaymentListView(views.APIView):
 		print(request.data)
 		print(serializer.is_valid())
 		if serializer.is_valid():
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
+			payment = serializer.create(request)
+			if payment:
+				#serializer.save()
+				return Response(status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class PaymentDetailView(views.APIView):
