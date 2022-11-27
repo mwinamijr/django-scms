@@ -124,7 +124,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=150, null=True, verbose_name="First Name")
     middle_name = models.CharField(max_length=150, null=True, verbose_name="Middle Name")
     last_name = models.CharField(max_length=150,  null=True, verbose_name="Last Name")
-    grad_date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
+    #grad_date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
     image = models.ImageField(upload_to="student_pics", blank=True, null=True)
     alert = models.CharField(max_length=500, blank=True, help_text="Warn any user who accesses this record with this text")
     sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
