@@ -112,8 +112,8 @@ class StudentSerializer(serializers.ModelSerializer):
         student.std_vii_number = data['std_vii_number']
         student.grade_level = GradeLevel.objects.get(name=data['grade_level'])
         student.class_level = ClassLevel.objects.get(name=data['class_level'])
-        student.birthday = data['birthday']
-        print(data['birthday'])
+        #student.birthday = data['birthday']
+        #print(data['birthday'])
         student.class_of_year = ClassYear.objects.get(year=data['class_of_year'])
         student.save()
         return student
