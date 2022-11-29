@@ -14,6 +14,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     date_joined = models.DateTimeField(default=timezone.now)
     salary = models.IntegerField(blank=True, null=True)
+    phone_number = models.CharField(max_length=10, blank=True, null=True, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_accountant = models.BooleanField(default=False)
