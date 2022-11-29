@@ -81,17 +81,43 @@ def teacherProfileView(request, pk):
 		'absent_days': absent_days + sick_days
 		})
 
+class UserListView(views.APIView):
+    """
+    List all users, or create a new user.
+    """
+    #permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=request.data)
+
+        print(serializer.is_valid())
+        print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
+    print(data)
     try:
         user = User.objects.create(
             first_name=data['first_name'],
             last_name=data['last_name'],
+            middle_name=data['middle_name'],
+            is_staff=data['is_staff'],
+            is_teacher=data['is_teacher'],
+            is_accountant=data['is_accountant'],
+            phone_number=data['phone_number'],
             email=data['email'],
+
             password=make_password(data['password'])
         )
 
@@ -99,7 +125,7 @@ def registerUser(request):
         return Response(serializer.data)
     except:
         message = {'detail': 'User with this email already exists'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
@@ -130,7 +156,7 @@ def getUserProfile(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+#@permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
