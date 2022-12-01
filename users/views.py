@@ -101,98 +101,29 @@ class UserListView(views.APIView):
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class UserDetailView(views.APIView):
 
-
-@api_view(['POST'])
-def registerUser(request):
-    data = request.data
-    print(data)
-    try:
-        user = User.objects.create(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            middle_name=data['middle_name'],
-            is_staff=data['is_staff'],
-            is_teacher=data['is_teacher'],
-            is_accountant=data['is_accountant'],
-            phone_number=data['phone_number'],
-            email=data['email'],
-
-            password=make_password(data['password'])
-        )
-
-        serializer = UserSerializerWithToken(user, many=False)
+    permission_classes = [IsAuthenticated]
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user)
         return Response(serializer.data)
-    except:
-        message = {'detail': 'User with this email already exists'}
+        
+    def put(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        user = self.get_object(pk)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def updateUserProfile(request):
-    user = request.user
-    serializer = UserSerializerWithToken(user, many=False)
-
-    data = request.data
-    user.first_name = data['first_name']
-    user.last_name = data['last_name']
-    user.email = data['email']
-
-    if data['password'] != '':
-        user.password = make_password(data['password'])
-
-    user.save()
-
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getUserProfile(request):
-    user = request.user
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-#@permission_classes([IsAdminUser])
-def getUsers(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-@permission_classes([IsAdminUser])
-def getUserById(request, pk):
-    user = User.objects.get(id=pk)
-    serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def updateUser(request, pk):
-    user = User.objects.get(id=pk)
-
-    data = request.data
-
-    user.first_name = data['first_name']
-    user.last_name = data['last_name']
-    user.email = data['email']
-    user.is_staff = data['isAdmin']
-
-    user.save()
-
-    serializer = UserSerializer(user, many=False)
-
-    return Response(serializer.data)
-
-
-@api_view(['DELETE'])
-@permission_classes([IsAdminUser])
-def deleteUser(request, pk):
-    userForDeletion = User.objects.get(id=pk)
-    userForDeletion.delete()
-    return Response('User was deleted')
