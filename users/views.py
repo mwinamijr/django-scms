@@ -20,7 +20,7 @@ from .models import CustomUser as User
 from schedule.models import Period, WeeklyTimeTable, DailyTimeTable
 
 from .models import Accountant, Teacher
-from .serializers import ( UserSerializer, UserSerializerWithToken,)
+from .serializers import ( UserSerializer, UserSerializerWithToken, TeacherSerializer, AccountantSerializer)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -103,7 +103,7 @@ class UserListView(views.APIView):
 
 class UserDetailView(views.APIView):
 
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -127,3 +127,75 @@ class UserDetailView(views.APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class TeacherListView(views.APIView):
+    """
+    List all teachers
+    """
+    #permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        teachers = Teacher.objects.all()
+        serializer = TeacherSerializer(teachers, many=True)
+        return Response(serializer.data)
+
+class TeacherDetailView(views.APIView):
+
+    #permission_classes = [IsAuthenticated]
+    def get_object(self, pk):
+        try:
+            return Teacher.objects.get(pk=pk)
+        except Teacher.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        teacher = self.get_object(pk)
+        serializer = TeacherSerializer(teacher)
+        return Response(serializer.data)
+        
+    def put(self, request, pk, format=None):
+        teacher = self.get_object(pk)
+        serializer = TeacherSerializer(teacher, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        teacher = self.get_object(pk)
+        teacher.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)	
+
+class AccountantListView(views.APIView):
+    """
+    List all accountants
+    """
+    #permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        accontants = Accountant.objects.all()
+        serializer = AccountantSerializer(accontants, many=True)
+        return Response(serializer.data)
+
+class AccountantDetailView(views.APIView):
+
+    #permission_classes = [IsAuthenticated]
+    def get_object(self, pk):
+        try:
+            return Accountant.objects.get(pk=pk)
+        except Accountant.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        accountant = self.get_object(pk)
+        serializer = AccountantSerializer(accountant)
+        return Response(serializer.data)
+        
+    def put(self, request, pk, format=None):
+        accountant = self.get_object(pk)
+        serializer = AccountantSerializer(accountant, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        accountant = self.get_object(pk)
+        accountant.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)	

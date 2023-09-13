@@ -72,20 +72,15 @@ class AccountantSerializer(serializers.ModelSerializer):
         return user
 
 
-class AccountantSerializerWithToken(AccountantSerializer):
-    token = serializers.SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = Accountant
-        fields = ['id', 'email', 'first_name', 'middle_name', 'last_name', 'isAccountant', 'token']
-
-    def get_token(self, obj):
-        token = RefreshToken.for_user(obj)
-        return str(token.access_token)
-
-
 class TeacherSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Teacher
         fields = "__all__"
 
+    def get_user(self, obj):
+        user = obj.user
+        serializer = UserSerializer(user, many=False)
+        user = serializer.data['first_name'] + ' ' + serializer.data['last_name']
+        return user
