@@ -2,7 +2,7 @@ from django.db import models
 import httpagentparser
 
 from users.models import Teacher
-from sis.models import GradeLevel, ClassLevel
+from sis.models import ClassLevel
 from administration.models import ClassSection
 
 TIMETABLE_CHOICES = [

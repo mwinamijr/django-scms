@@ -3,9 +3,7 @@ import httpagentparser
 from django.conf import settings
 
 from users.models import CustomUser, Teacher
-from sis.models import GradeLevel, ClassLevel
-
-from django.utils import timezone
+from sis.models import ClassLevel
 
 
 class Article(models.Model):
@@ -32,7 +30,7 @@ class AccessLog(models.Model):
     login = models.ForeignKey(CustomUser, null=True, on_delete=models.SET_NULL)
     ua = models.CharField(max_length=2000,
                           help_text="User agent. We can use this to determine operating system and browser in use.")
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now=True)
     ip = models.GenericIPAddressField()
     usage = models.CharField(max_length=255)
 

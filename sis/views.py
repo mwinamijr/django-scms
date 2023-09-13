@@ -8,14 +8,12 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 
 from .models import (
-    PhoneNumber, EmergencyContact, EmergencyContactNumber, 
-    GradeLevel, ClassYear, Student, StudentHealthRecord, 
-    GradeScale, GradeScaleRule, SchoolYear, MessageToStudent)
+	ClassYear, Student, StudentHealthRecord, 
+    GradeScale, GradeScaleRule, SchoolYear)
 
 from .serializers import (
-	PhoneNumberSerializer, EmergencyContactSerializer, EmergencyContactNumberSerializer, 
-    GradeLevelSerializer, ClassYearSerializer, StudentSerializer, StudentHealthRecordSerializer, 
-    GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, MessageToStudentSerializer,StudentSerializer,
+	ClassYearSerializer, StudentSerializer, StudentHealthRecordSerializer, 
+    GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, StudentSerializer,
 	FileUploadSerializer
 	)
 
@@ -97,7 +95,6 @@ class StudentBulkUploadView(views.APIView):
 				"grad_date": f"{studentz[i][4]}",
 				"sex": f"{studentz[i][5]}",
 				"birthday": f"{studentz[i][6]}",
-				"grade_level": f"{studentz[i][7]}",
 				"class_level": f"{studentz[i][8]}",	
 					}
 			students.append(student)

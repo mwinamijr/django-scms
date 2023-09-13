@@ -6,10 +6,10 @@ from users.models import CustomUser
 from sis.serializers import StudentSerializer
 from users.serializers import AccountantSerializer, UserSerializer
 
-class AllocationSerializer(serializers.ModelSerializer):
+class ReceiptAllocationSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Allocation
+        model = ReceiptAllocation
         fields = "__all__"
 
 class PaymentAllocationSerializer(serializers.ModelSerializer):
@@ -35,7 +35,7 @@ class ReceiptSerializer(serializers.ModelSerializer):
     
     def get_paid_for(self, obj):
         paid_for = obj.paid_for
-        serializer = AllocationSerializer(paid_for, many=False)
+        serializer = ReceiptAllocationSerializer(paid_for, many=False)
         paid_for = serializer.data['name']
         return paid_for
 
@@ -50,7 +50,7 @@ class ReceiptSerializer(serializers.ModelSerializer):
         receipt = Receipt()
         receipt.receipt_no = data['receipt_no']
         student = Student.objects.get(first_name=data['student'])
-        paid_for = Allocation.objects.get(name=data['paid_for'])
+        paid_for = ReceiptAllocation.objects.get(name=data['paid_for'])
         received_by = Accountant.objects.get(user=CustomUser.objects.get(first_name=data['received_by']))
         receipt.payer = data['payer']
         receipt.amount = data['amount']

@@ -2,90 +2,6 @@ from django.db import models
 from django.conf import settings
 from datetime import date
 
-class PhoneNumber(models.Model):
-    number = models.CharField(max_length=15, blank=True, null=True)
-    _type = models.CharField(max_length=2, choices=(('H', 'Home'), ('C', 'Cell'), ('W', 'Work'), ('O', 'Other')), blank=True)
-    def __str__(self):
-        return self.number
-
-
-class EmergencyContact(models.Model):
-    first_name = models.CharField(max_length=255, verbose_name="First Name")
-    middle_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Middle Name")
-    last_name = models.CharField(max_length=255, verbose_name="Last Name")
-    relationship_to_student = models.CharField(max_length=500, blank=True)
-    city = models.CharField(max_length=255, blank=True, null=True)
-    state = models.CharField(max_length=255, blank=True, null=True)
-    street = models.CharField(max_length=255, blank=True, null=True)
-    post_code = models.CharField(max_length=10, blank=True, null=True)
-    email = models.EmailField(blank=True)
-    primary_contact = models.BooleanField(default=True, help_text="This contact is where mailings should be sent to. In the event of an emergency, this is the person that will be contacted first.")
-    emergency_only = models.BooleanField(default=False, help_text="Only contact in case of emergency")
-    sync_schoolreach = models.BooleanField(help_text="Sync this contact with schoolreach",default=True)
-
-    class Meta:
-        ordering = ('primary_contact', 'last_name')
-        verbose_name = "Student Contact"
-
-    def __str__(self):
-        txt = self.first_name + " " + self.last_name
-        for number in self.emergencycontactnumber_set.all():
-            txt += " " + str(number)
-        return txt
-
-    def save(self, *args, **kwargs):
-        super(EmergencyContact, self).save(*args, **kwargs)
-        self.cache_student_addresses()
-
-    def cache_student_addresses(self):
-        """cache these for the student for primary contact only
-        There is another check on Student in case all contacts where deleted"""
-        if self.primary_contact:
-            for student in self.student_set.all():
-                student.parent_guardian = self.first_name + " " + self.last_name
-                student.city = self.city
-                student.state = self.state
-                student.street = self.street
-                student.post_code = self.post_code
-                student.parent_email = self.email
-                student.save()
-                for contact in student.emergency_contacts.exclude(id=self.id):
-                    # There should only be one primary contact!
-                    if contact.primary_contact:
-                        contact.primary_contact = False
-                        contact.save()
-
-class EmergencyContactNumber(PhoneNumber):
-    contact = models.ForeignKey(EmergencyContact, on_delete=models.CASCADE)
-    primary = models.BooleanField(default=False, )
-
-    class Meta:
-        verbose_name = "Student Contact Number"
-
-    def save(self, *args, **kwargs):
-        if self.primary:
-            for contact in self.contact.emergencycontactnumber_set.exclude(id=self.id).filter(primary=True):
-                contact.primary = False
-                contact.save()
-        super(EmergencyContactNumber, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.get__type_display() + ":" + self.number
-
-class GradeLevel(models.Model):
-    id = models.IntegerField(unique=True, primary_key=True, verbose_name="Grade Number")
-    name = models.CharField(max_length=150, unique=True, verbose_name="Grade Name")
-
-    class Meta:
-        ordering = ('id',)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def grade(self):
-        return self.id
-
 class ClassYear(models.Model):
     """ Class year such as class of 2010.
     """
@@ -124,17 +40,10 @@ class Student(models.Model):
     first_name = models.CharField(max_length=150, null=True, verbose_name="First Name")
     middle_name = models.CharField(max_length=150, null=True, verbose_name="Middle Name")
     last_name = models.CharField(max_length=150,  null=True, verbose_name="Last Name")
-    #grad_date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
     image = models.ImageField(upload_to="student_pics", blank=True, null=True)
     alert = models.CharField(max_length=500, blank=True, help_text="Warn any user who accesses this record with this text")
-    sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
+    gender = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')), blank=True, null=True)
     birthday = models.DateField(blank=True, null=True, verbose_name="Birth Date", validators=settings.DATE_VALIDATORS)
-    grade_level = models.ForeignKey(
-        GradeLevel,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name="Grade level")
     class_level = models.ForeignKey(
         ClassLevel,
         blank=True,
@@ -146,19 +55,16 @@ class Student(models.Model):
         on_delete=models.SET_NULL,
         verbose_name="Graduating Class", 
         blank=True, null=True)
-    #date_dismissed = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
     std_vii_number = models.CharField(max_length=15,blank=True, null=True, unique=True, help_text="For integration with outside databases")
     prems_number = models.CharField(max_length=15,blank=True, null=True, unique=True, help_text="For integration with outside databases")
 
-    # These fields are cached from emergency contacts
-    parent_guardian = models.CharField(max_length=150, blank=True, editable=False)
-    region = models.CharField(max_length=255, blank=True, editable=True, null=True)
-    city = models.CharField(max_length=255, blank=True)
+    parent_contact = models.CharField(max_length=13, blank=True, null=True)
+    region = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
     street = models.CharField(max_length=255, blank=True)
-    post_code = models.IntegerField(blank=True, editable=False, null=True)
-    parent_email = models.EmailField(blank=True, editable=False)
-    notes = models.TextField(blank=True)
-    emergency_contacts = models.ManyToManyField(EmergencyContact, verbose_name="Student Contact", blank=True)
+    post_code = models.IntegerField(blank=True, null=True)
+    parent_email = models.EmailField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     siblings = models.ManyToManyField('Student', blank=True)
     #gpa = CachedDecimalField(editable=False, max_digits=5, decimal_places=2, blank=True, null=True)
 
@@ -261,14 +167,3 @@ class SchoolYear(models.Model):
         super(SchoolYear, self).save(*args, **kwargs)
         if self.active_year:
             _all = SchoolYear.objects.exclude(id=self.id).update(active_year=False)
-
-
-class MessageToStudent(models.Model):
-    """ Stores a message to be shown to students for a specific amount of time
-    """
-    message = models.TextField(help_text="This message will be shown to students when they log in.")
-    start_date = models.DateField(auto_now_add=False, validators=settings.DATE_VALIDATORS)
-    end_date = models.DateField(auto_now_add=False, validators=settings.DATE_VALIDATORS)
-    def __str__(self):
-        return self.message
-

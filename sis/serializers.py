@@ -1,32 +1,9 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import PhoneNumber, EmergencyContact, EmergencyContactNumber, GradeLevel, ClassLevel, ClassYear, Student, \
-    StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear, MessageToStudent
+from .models import ClassLevel, ClassYear, Student, \
+    StudentHealthRecord, GradeScale, GradeScaleRule, SchoolYear
 
-
-class PhoneNumberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PhoneNumber
-        fields = "__all__"
-
-
-class EmergencyContactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmergencyContact
-        fields = "__all__"
-
-
-class EmergencyContactNumberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmergencyContactNumber
-        fields = "__all__"
-
-
-class GradeLevelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GradeLevel
-        fields = "__all__"
 
 class ClassLevelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,14 +41,7 @@ class SchoolYearSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class MessageToStudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MessageToStudent
-        fields = "__all__"
-
-
 class StudentSerializer(serializers.ModelSerializer):
-    grade_level = serializers.SerializerMethodField(read_only=True)
     class_level = serializers.SerializerMethodField(read_only=True)
     class_of_year = serializers.SerializerMethodField(read_only=True)
     #emergency_contacts = serializers.SerializerMethodField(read_only=True)
@@ -79,12 +49,6 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = "__all__"
-
-    def get_grade_level(self, obj):
-        grade_level = obj.grade_level
-        serializer = GradeLevelSerializer(grade_level, many=False)
-        grade_level = serializer.data['name']
-        return grade_level
 
     def get_class_level(self, obj):
         class_level = obj.class_level
@@ -110,12 +74,11 @@ class StudentSerializer(serializers.ModelSerializer):
         student.street = data['street']
         student.prems_number = data['prems_number']
         student.std_vii_number = data['std_vii_number']
-        student.grade_level = GradeLevel.objects.get(name=data['grade_level'])
         student.class_level = ClassLevel.objects.get(name=data['class_level'])
-        student.sex = data['sex']
+        student.gender = data['gender']
         #student.birthday = data['birthday']
         #print(data['birthday'])
-        student.class_of_year = ClassYear.objects.get(year=data['class_of_year'])
+        #student.class_of_year = ClassYear.objects.get(year=data['class_of_year'])
         student.save()
         return student
 
@@ -126,7 +89,6 @@ class StudentSerializer(serializers.ModelSerializer):
         student.first_name = data['first_name']
         student.middle_name = data['middle_name']
         student.last_name = data['last_name']
-        student.grade_level = GradeLevel.objects.get(name=data['grade_level'])
         student.class_level = ClassLevel.objects.get(name=data['class_level'])
         student.birthday = data['birthday']
         print(data['birthday'][:10])
