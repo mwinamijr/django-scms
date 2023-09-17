@@ -54,7 +54,7 @@ class Teacher(models.Model):
         ordering = ("id",)
 
     def __str__(self):
-        return self.short_name
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 
