@@ -1,12 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from users.views import (
-	 teacherProfileView, MyTokenObtainPairView, UserListView, UserDetailView,
+	 MyTokenObtainPairView, UserListView, UserDetailView,
 	 AccountantListView, AccountantDetailView, TeacherListView, TeacherDetailView
 	 )
 
 urlpatterns = [
-    path('teacher-profile/<int:pk>/', teacherProfileView, name="teacher-profile"),
 	path('login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('', UserListView.as_view(), name='user-list'),
     

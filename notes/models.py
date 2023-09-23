@@ -1,6 +1,6 @@
 from django.db import models
 
-from schedule.models import Subject
+from academic.models import Subject
 from sis.models import ClassLevel, Student
 from users.models import CustomUser as User
 

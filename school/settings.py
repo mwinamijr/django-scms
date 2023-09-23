@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'debug_toolbar',
 
+    'academic.apps.AcademicConfig',
     'administration.apps.AdministrationConfig',
     'api.apps.ApiConfig',
     'attendance.apps.AttendanceConfig',
