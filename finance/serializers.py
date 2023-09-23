@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
 from .models import *
-from sis.models import Student
+from academic.models import Student
 from users.models import CustomUser
-from sis.serializers import StudentSerializer
+from academic.serializers import StudentSerializer
 from users.serializers import AccountantSerializer, UserSerializer
 
 class ReceiptAllocationSerializer(serializers.ModelSerializer):

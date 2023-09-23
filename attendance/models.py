@@ -1,8 +1,9 @@
 from django.db import models
 from django.conf import settings
 
-from sis.models import Student
-from users.models import CustomUser, Teacher, Accountant
+from academic.models import Student
+from users.models import CustomUser, Accountant
+from academic.models import Teacher
 import datetime
 
 # Create your models here.
@@ -54,14 +55,14 @@ class TeachersAttendance(models.Model):
         else:
             pass
     '''
-
+'''
 class StudentAttendance(models.Model):
     """
     This is daily students attendance 
     """
     student = models.ForeignKey(Student, blank=True, on_delete=models.CASCADE)
     date = models.DateField(blank=True, null=True, validators=settings.DATE_VALIDATORS)
-    ClassSection = models.ForeignKey('administration.ClassSection', on_delete=models.CASCADE, blank=True, null=True)
+    ClassRoom = models.ForeignKey('academic.ClassRoom', on_delete=models.CASCADE, blank=True, null=True)
     status = models.ForeignKey(AttendanceStatus, blank=True, null=True, on_delete=models.CASCADE)
     notes = models.CharField(max_length=500, blank=True)
 
@@ -84,3 +85,4 @@ class StudentAttendance(models.Model):
         else:
             try: self.delete()
             except: pass
+            '''

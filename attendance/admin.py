@@ -4,4 +4,4 @@ from .models import *
 
 admin.site.register(AttendanceStatus)
 admin.site.register(TeachersAttendance)
-admin.site.register(StudentAttendance)
+#admin.site.register(StudentAttendance)

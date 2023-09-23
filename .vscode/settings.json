@@ -1,12 +1,17 @@
 {
-  "python.pythonPath": "C:\\Python39\\python.exe",
+  "python.pythonPath": ".env/bin/python",
   "editor.formatOnSave": true,
   "python.linting.pycodestyleEnabled": false,
   "python.linting.pylintPath": "pylint",
-  "python.linting.pylintArgs": ["--load-plugins", "pylint_django"],
+  "python.linting.pylintArgs": [
+    "--load-plugins",
+    "pylint_django"
+  ],
   "python.linting.pylintEnabled": true,
-  "python.venvPath": "${workspaceFolder}env\\Scripts\\python.exe",
-  "python.linting.pycodestyleArgs": ["--ignore=E501"],
+  "python.venvPath": ".env/bin/python",
+  "python.linting.pycodestyleArgs": [
+    "--ignore=E501"
+  ],
   "files.exclude": {
     "**/*.pyc": true
   },

@@ -23,6 +23,7 @@ ACADEMIC_TERM = (
 	("ONE", "One"),
 	("TWO", "Two"),
 	("THREE", "Three"),
+    ("FOUR", 'Four'),
 )
 
 GENDER_CHOICE = (

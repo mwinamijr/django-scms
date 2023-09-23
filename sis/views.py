@@ -7,15 +7,10 @@ from django.http import Http404
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 
-from .models import (
-	ClassYear, Student, StudentHealthRecord, 
-    GradeScale, GradeScaleRule, SchoolYear)
+from academic.models import Student
 
-from .serializers import (
-	ClassYearSerializer, StudentSerializer, StudentHealthRecordSerializer, 
-    GradeScaleSerializer, GradeScaleRuleSerializer, SchoolYearSerializer, StudentSerializer,
-	FileUploadSerializer
-	)
+from .serializers import FileUploadSerializer
+from academic.serializers import StudentSerializer
 
 class StudentListView(views.APIView):
 	"""

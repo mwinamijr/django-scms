@@ -1,6 +1,6 @@
 from django.db import models
 
-from sis.models import Student
+from academic.models import Student
 from users.models import Accountant
 from users.models import CustomUser as User
 

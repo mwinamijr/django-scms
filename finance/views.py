@@ -8,7 +8,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 import json
 
-from users.models import Teacher
+from academic.models import Teacher
 from .models import Receipt, Payment
 from .serializers import (ReceiptSerializer, PaymentSerializer)
 

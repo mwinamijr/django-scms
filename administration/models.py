@@ -4,8 +4,7 @@ from django.conf import settings
 from datetime import date, datetime
 
 from .common_objs import * 
-from users.models import CustomUser, Teacher
-from sis.models import ClassLevel
+from users.models import CustomUser
 
 
 class Article(models.Model):
@@ -120,25 +119,3 @@ class AcademicYear(models.Model):
         if self.active_year:
             # if it is marked as the current year the update all the tables row in the database with false
             AcademicYear.objects.exclude(pk=self.pk).update(active_year="False")
-
-
-class ClassTeacher(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
-    class_section = models.ForeignKey('ClassSection', on_delete=models.CASCADE, blank=True, null=True)
-    is_primary = models.BooleanField(default=False)
-
-    class Meta:
-        unique_together = ('teacher', 'class_section')
-
-    def __str__(self):
-        return f"{self.teacher}-{self.class_section}"
-
-
-class ClassSection(models.Model):
-    classLevel = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
-    section = models.CharField(max_length=1, choices=(('A', 'A'), ('B', 'B'), ('C', 'C')))
-    students = models.ManyToManyField('sis.Student', blank=True)
-    year = models.IntegerField(default=1)
-
-    def __str__(self):
-        return f"{self.classLevel} {self.section}"

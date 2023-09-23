@@ -17,8 +17,8 @@ from attendance.serializers import (TeachersAttendanceSerializer)
 
 from .models import CustomUser as User
 
-from .models import Accountant, Teacher
-from .serializers import ( UserSerializer, UserSerializerWithToken, TeacherSerializer, AccountantSerializer)
+from .models import Accountant
+from .serializers import ( UserSerializer, UserSerializerWithToken, AccountantSerializer)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -81,43 +81,6 @@ class UserDetailView(views.APIView):
         user = self.get_object(pk)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class TeacherListView(views.APIView):
-    """
-    List all teachers
-    """
-    #permission_classes = [IsAuthenticated]
-    def get(self, request, format=None):
-        teachers = Teacher.objects.all()
-        serializer = TeacherSerializer(teachers, many=True)
-        return Response(serializer.data)
-
-class TeacherDetailView(views.APIView):
-
-    #permission_classes = [IsAuthenticated]
-    def get_object(self, pk):
-        try:
-            return Teacher.objects.get(pk=pk)
-        except Teacher.DoesNotExist:
-            raise Http404
-    def get(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        serializer = TeacherSerializer(teacher)
-        return Response(serializer.data)
-        
-    def put(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        serializer = TeacherSerializer(teacher, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        teacher.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)	
 
 class AccountantListView(views.APIView):
     """

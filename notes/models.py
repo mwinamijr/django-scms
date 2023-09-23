@@ -1,13 +1,13 @@
 from django.db import models
 
 from academic.models import Subject
-from sis.models import ClassLevel, Student
+from academic.models import ClassRoom, Student
 from users.models import CustomUser as User
 
 
 class Topic(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
-    _class = models.ForeignKey(ClassLevel, on_delete=models.CASCADE, blank=True, null=True)
+    _class = models.ForeignKey(ClassRoom, on_delete=models.CASCADE, blank=True, null=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):

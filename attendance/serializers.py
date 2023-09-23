@@ -2,8 +2,8 @@ from rest_framework import serializers
 from openpyxl import load_workbook, Workbook
 from openpyxl.utils import get_column_letter
 
-from .models import AttendanceStatus, TeachersAttendance, StudentAttendance
-from users.serializers import TeacherSerializer
+from .models import AttendanceStatus, TeachersAttendance
+from academic.serializers import TeacherSerializer
 
 class AttendanceStatusSerializer(serializers.ModelSerializer):
 	class Meta:
