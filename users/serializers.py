@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'isParent', 'phone_number']
+        fields = ['id', 'email', 'username', 'first_name', 'middle_name', 'last_name', 'isAdmin', 'isAccountant', 'isTeacher', 'isParent']
 
     def get_isAdmin(self, obj):
         return obj.is_staff
@@ -59,28 +59,15 @@ class UserSerializerWithToken(UserSerializer):
             return {'isParent': isParent}
 
 class AccountantSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Accountant
         fields = "__all__"
 
-    def get_user(self, obj):
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
-        user = serializer.data['first_name'] + ' ' + serializer.data['last_name']
-        return user
-
 
 class TeacherSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Teacher
         fields = "__all__"
 
-    def get_user(self, obj):
-        user = obj.user
-        serializer = UserSerializer(user, many=False)
-        user = serializer.data['first_name'] + ' ' + serializer.data['last_name']
-        return user
