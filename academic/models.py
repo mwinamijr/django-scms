@@ -348,6 +348,9 @@ class Student(models.Model):
     reason_left = models.ForeignKey(
         ReasonLeft, blank=True, null=True, on_delete=models.SET_NULL
     )
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICE, blank=True, null=True
+    )
     religion = models.CharField(max_length=50, choices=RELIGION_CHOICE, null=True)
     region = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
@@ -433,13 +436,15 @@ class Student(models.Model):
 			group.save()
 		user.groups.add(group)
 		user.save() 
-		"""
+		
 
     def clean(self):
-        """Check if a Faculty exists, cant have someone be a student and faculty"""
+        
+        # Check if a Faculty exists, cant have someone be a student and faculty
         if Teacher.objects.filter(id=self.id).count():
             raise ValidationError("Cannot have someone be a student AND faculty!")
         super(Student, self).clean()
+    """
 
     def graduate_and_create_alumni(self):
         self.inactive = True
