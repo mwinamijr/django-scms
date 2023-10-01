@@ -91,7 +91,7 @@ WSGI_APPLICATION = "school.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "hayatul",
+        "NAME": "hips",
         "USER": "postgres",
         "PASSWORD": config("POSTGRES_PASSWORD"),
         "HOST": "127.0.0.1",

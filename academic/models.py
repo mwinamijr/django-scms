@@ -266,23 +266,23 @@ class SubjectAllocation(models.Model):
 
 
 class Parent(models.Model):
-    username = models.CharField(unique=True, max_length=250, blank=True)
     first_name = models.CharField(max_length=300, verbose_name="First Name", blank=True)
-    middle_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=300, verbose_name="Last Name", blank=True)
+    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(
+        max_length=300, verbose_name="Last Name", blank=True, null=True
+    )
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE, blank=True)
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(null=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    middle_name = models.CharField(max_length=50, null=True, blank=True)
-    parent_type = models.CharField(choices=Parent_CHOICE, max_length=10)
+    parent_type = models.CharField(choices=PARENT_CHOICE, max_length=10)
     address = models.CharField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=150, help_text="personal phone number")
     national_id = models.CharField(max_length=100, blank=True, null=True)
     occupation = models.CharField(
-        max_length=255, blank=True, help_text="current occupation"
+        max_length=255, blank=True, null=True, help_text="current occupation"
     )
     monthly_income = models.FloatField(
-        help_text="parents average monthly income", blank=True
+        help_text="parents average monthly income", blank=True, null=True
     )
     single_parent = models.BooleanField(
         default=False, blank=True, help_text="is he/she a single parent"
@@ -321,10 +321,10 @@ class Parent(models.Model):
 
 
 class Student(models.Model):
-    unique_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=150, null=True, verbose_name="First Name")
     middle_name = models.CharField(
-        max_length=150, null=True, verbose_name="Middle Name"
+        max_length=150, blank=True, null=True, verbose_name="Middle Name"
     )
     last_name = models.CharField(max_length=150, null=True, verbose_name="Last Name")
     graduation_date = models.DateField(blank=True, null=True)
@@ -338,13 +338,13 @@ class Student(models.Model):
     reason_left = models.ForeignKey(
         ReasonLeft, blank=True, null=True, on_delete=models.SET_NULL
     )
-    religion = models.CharField(max_length=50, blank=True, null=True)
+    religion = models.CharField(max_length=50, choices=RELIGION_CHOICE, null=True)
     region = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     street = models.CharField(max_length=255, blank=True)
     blood_group = models.CharField(max_length=10, blank=True, null=True)
     parent_guardian = models.ForeignKey(
-        Parent, on_delete=models.CASCADE, blank=True, related_name="child"
+        Parent, on_delete=models.CASCADE, blank=True, null=True, related_name="child"
     )
     date_of_birth = models.DateField(blank=True)
     admission_date = models.DateTimeField(auto_now_add=True)

@@ -7,59 +7,55 @@ PASS = "PASS"
 FAIL = "FAIL"
 
 GRADE = (
-	(A, 'A'),
-	(B, 'B'),
-	(C, 'C'),
-	(D, 'D'),
-	(F, 'F'),
+    (A, "A"),
+    (B, "B"),
+    (C, "C"),
+    (D, "D"),
+    (F, "F"),
 )
 
 COMMENT = (
-	(PASS, "PASS"),
-	(FAIL, "FAIL"),
+    (PASS, "PASS"),
+    (FAIL, "FAIL"),
 )
 
 ACADEMIC_TERM = (
-	("ONE", "One"),
-	("TWO", "Two"),
-	("THREE", "Three"),
-    ("FOUR", 'Four'),
+    ("ONE", "One"),
+    ("TWO", "Two"),
+    ("THREE", "Three"),
+    ("FOUR", "Four"),
 )
 
-GENDER_CHOICE = (
-	('Male', 'Male'),
-	('Female', 'Female'),
-	('Other', 'Other')
+GENDER_CHOICE = (("Male", "Male"), ("Female", "Female"), ("Other", "Other"))
+RELIGION_CHOICE = (("Islam", "Islam"), ("Christian", "Christian"), ("Other", "Other"))
+
+PARENT_CHOICE = (
+    ("Father", "Father"),
+    ("Mother", "Mother"),
+    ("Guardian", "Guardian"),
 )
-
-Parent_CHOICE = (
-		('Father', 'Father'),
-		('Mother', 'Mother'),
-		('Guardian', 'Guardian'),
-
-	)
 
 SCHOOL_TYPE_CHOICE = (
-	('boarding school', 'boarding school'),
-	('day school', 'day school'),
-	('boarding-day school', 'boarding-day school')
+    ("boarding school", "boarding school"),
+    ("day school", "day school"),
+    ("boarding-day school", "boarding-day school"),
 )
 
 SCHOOL_STUDENTS_GENDER = (
-	('Boys School', 'Boys School'),
-	('Girl School', 'Girl School'),
-	('Mixed', 'Mixed'),
+    ("Boys School", "Boys School"),
+    ("Girl School", "Girl School"),
+    ("Mixed", "Mixed"),
 )
 
 SCHOOL_OWNERSHIP = (
-	('Government', 'Government'),
-	('Private', 'Private'),
+    ("Government", "Government"),
+    ("Private", "Private"),
 )
 
 
 ATTENDANCE_CHOICES = (
-	("Present", "Present"),
-	('Absent', 'Absent'),
-	('Holiday', 'Holiday'),
-	('Sick', 'Sick'),
+    ("Present", "Present"),
+    ("Absent", "Absent"),
+    ("Holiday", "Holiday"),
+    ("Sick", "Sick"),
 )

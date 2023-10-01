@@ -5,6 +5,7 @@ from .models import *
 admin.site.register(Department)
 admin.site.register(Subject)
 admin.site.register(GradeLevel)
+admin.site.register(ClassLevel)
 admin.site.register(ClassYear)
 admin.site.register(ReasonLeft)
 admin.site.register(Stream)
