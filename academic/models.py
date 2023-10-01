@@ -266,17 +266,27 @@ class SubjectAllocation(models.Model):
 
 
 class Parent(models.Model):
-    first_name = models.CharField(max_length=300, verbose_name="First Name", blank=True)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
+    first_name = models.CharField(
+        max_length=300, verbose_name="First Name", blank=True, null=True
+    )
+    middle_name = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name="Middle Name"
+    )
     last_name = models.CharField(
         max_length=300, verbose_name="Last Name", blank=True, null=True
     )
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICE, blank=True)
-    email = models.EmailField(null=True)
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICE, blank=True, null=True
+    )
+    email = models.EmailField(blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    parent_type = models.CharField(choices=PARENT_CHOICE, max_length=10)
-    address = models.CharField(max_length=255, blank=True)
-    phone_number = models.CharField(max_length=150, help_text="personal phone number")
+    parent_type = models.CharField(
+        choices=PARENT_CHOICE, max_length=10, blank=True, null=True
+    )
+    address = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=150, unique=True, help_text="personal phone number"
+    )
     national_id = models.CharField(max_length=100, blank=True, null=True)
     occupation = models.CharField(
         max_length=255, blank=True, null=True, help_text="current occupation"
@@ -293,7 +303,7 @@ class Parent(models.Model):
     inactive = models.BooleanField(default=False)
 
     def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
+        return self.email
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -346,6 +356,7 @@ class Student(models.Model):
     parent_guardian = models.ForeignKey(
         Parent, on_delete=models.CASCADE, blank=True, null=True, related_name="child"
     )
+    parent_contact = models.CharField(max_length=15, blank=True, null=True)
     date_of_birth = models.DateField(blank=True)
     admission_date = models.DateTimeField(auto_now_add=True)
     admission_number = models.CharField(max_length=50, blank=True, unique=True)
@@ -357,7 +368,7 @@ class Student(models.Model):
     )
 
     def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
+        return f"{self.first_name} {self.last_name}"
 
     def get_year(self, active_year):
         """get the year (fresh, etc) from the class of XX year"""
@@ -382,6 +393,22 @@ class Student(models.Model):
                 self.year = self.get_year(active_year)
             except:
                 return None
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        # create prent from student data
+        parent, created = Parent.objects.get_or_create(
+            phone_number=self.parent_contact,
+            email="mzaziwa" + str(self.first_name) + str(self.last_name) + "@hic.com",
+            first_name=self.middle_name,
+            last_name=self.last_name,
+        )
+        if created:
+            parent.save()
+
+        self.parent_guardian = parent
+        super(Student, self).save()
 
     """
 	def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
