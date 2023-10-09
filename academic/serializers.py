@@ -108,7 +108,7 @@ class StudentSerializer(serializers.ModelSerializer):
         student.first_name = data["first_name"]
         student.middle_name = data["middle_name"]
         student.last_name = data["last_name"]
-        student.addmission_number = data["addmission_number"]
+        student.admission_number = data["addmission_number"]
         student.parent_contact = data["parent_contact"]
         student.region = data["region"]
         student.city = data["city"]
@@ -121,23 +121,18 @@ class StudentSerializer(serializers.ModelSerializer):
         student.save()
         return student
 
-    def bulk_create(self, request):
-        data = request.data
+    def bulk_create(self, student):
+        data = student
+        print(data)
         student = Student()
-        student.addmission_number = data["addmission_number"]
-        student.first_name = data["first_name"]
-        student.middle_name = data["middle_name"]
-        student.last_name = data["last_name"]
-        student.class_level = ClassRoom.objects.get(name=data["class_level"])
-        student.birthday = data["birthday"]
-        print(data["birthday"][:10])
-        # student.grad_date = data['grad_date']
-        student.region = data["region"]
-        student.city = data["city"]
-        student.street = data["street"]
-        student.prems_number = data["prems_number"]
-        student.sex = data["sex"]
-        student.std_vii_number = data["std_vii_number"]
-
-        # student.save()
+        student.first_name = data["first_name"].lower()
+        student.middle_name = data["middle_name"].lower()
+        student.last_name = data["last_name"].lower()
+        student.admission_number = data["addmission_number"]
+        student.parent_contact = data["parent_contact"]
+        student.grade_level = GradeLevel.objects.get(name=data["grade_level"])
+        student.gender = data["gender"]
+        student.date_of_birth = "2000-01-01"
+        # student.class_of_year = ClassYear.objects.get(year=data['class_of_year'])
+        student.save()
         return student

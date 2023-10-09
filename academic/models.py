@@ -53,7 +53,6 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=300, verbose_name="Last Name", blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE, blank=True)
     email = models.EmailField(blank=True, null=True)
-    teacher_id = models.CharField(max_length=255, unique=True, blank=True, null=True)
     empId = models.CharField(max_length=8, null=True, blank=True, unique=True)
     tin_number = models.CharField(max_length=9, null=True, blank=True)
     nssf_number = models.CharField(max_length=9, null=True, blank=True)
@@ -91,7 +90,9 @@ class Teacher(models.Model):
         #  check if the person is already a student
         # if Student.objects.filter(id=self.id).count():
         #    raise ValidationError("cannot have a someone be a student and a Teacher")
-
+        # create username
+        username = self.first_name + self.last_name
+        self.username = username
         # save model
         super(Teacher, self).save()
 
@@ -351,7 +352,9 @@ class Student(models.Model):
     gender = models.CharField(
         max_length=10, choices=GENDER_CHOICE, blank=True, null=True
     )
-    religion = models.CharField(max_length=50, choices=RELIGION_CHOICE, null=True)
+    religion = models.CharField(
+        max_length=50, choices=RELIGION_CHOICE, blank=True, null=True
+    )
     region = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     street = models.CharField(max_length=255, blank=True)
@@ -363,6 +366,7 @@ class Student(models.Model):
     date_of_birth = models.DateField(blank=True)
     admission_date = models.DateTimeField(auto_now_add=True)
     admission_number = models.CharField(max_length=50, blank=True, unique=True)
+    prem_number = models.CharField(max_length=50, blank=True)
     siblings = models.ManyToManyField("Student", blank=True)
     image = models.ImageField(upload_to="StudentsImages", blank=True)
 
