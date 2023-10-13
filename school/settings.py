@@ -1,9 +1,7 @@
-import imp
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
 import os
-import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +16,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 import datetime
 from django.core.validators import MinValueValidator  # Could use MaxValueValidator too
@@ -68,7 +66,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, "templates"),
+            os.path.join(BASE_DIR, "templates/build"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -95,7 +93,7 @@ DATABASES = {
         "USER": "postgres",
         "PASSWORD": config("POSTGRES_PASSWORD"),
         "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "PORT": config("POSTGRES_PORT"),
     }
 }
 
@@ -143,6 +141,8 @@ MEDIA_URL = "/images/"
 MEDIA_ROOT = BASE_DIR / "static/images"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "templates/build/static"]
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
@@ -178,8 +178,6 @@ SIMPLE_JWT = {
 
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-django_heroku.settings(locals())
 
 AUTH_USER_MODEL = "users.CustomUser"
 
