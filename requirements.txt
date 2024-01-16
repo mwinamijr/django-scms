@@ -12,7 +12,7 @@ dill==0.3.7
 distlib==0.3.0
 distro==1.4.0
 dj-database-url==0.5.0
-Django==4.1
+Django==4.1.7
 django-cors-headers==3.13.0
 django-debug-toolbar==3.6.0
 djangorestframework==3.13.1
