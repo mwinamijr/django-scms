@@ -92,7 +92,7 @@ class StudentAttendance(models.Model):
         ordering = ("-date", "student")
 
     def __str__(self):
-        return f"{self.student.fname} - {self.date} {self.status}"
+        return f"{self.student.first_name} - {self.date} {self.status}"
 
     @property
     def edit(self):
