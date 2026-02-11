@@ -9,7 +9,7 @@ environ==1.0
 et-xmlfile==1.1.0
 filelock==3.8.0
 openpyxl==3.1.5
-pillow==10.4.0
+pillow==12.1.1
 platformdirs==2.5.2
 psycopg2==2.9.10
 PyJWT==2.9.0
