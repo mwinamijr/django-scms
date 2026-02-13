@@ -14,7 +14,7 @@ platformdirs==2.5.2
 psycopg2==2.9.10
 PyJWT==2.9.0
 python-decouple==3.8
-sqlparse==0.5.1
+sqlparse==0.5.4
 typing_extensions==4.12.2
 tzdata==2024.1
 ua-parser==1.0.0
